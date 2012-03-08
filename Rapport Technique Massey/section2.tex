@@ -1,0 +1,121 @@
+\section{G\'en\'eration de la commande}
+\label{sec:command}
+
+Le robot devant au final \^etre utilis\'e dans un environnement destin\'e \`a l'\^etre humain, il faut que les gestes r\'ealis\'es soient suffisament souples pour ne pas d\'eranger ou faire peur aux personnes aux alentours.
+
+On choisira donc un mouvement sans acc\'el\'eration brutale ce qui implique une vitesse continue.
+Le type de courbe retenu pour la vitesse est du type parabolique.
+
+\subsection{Param\`etres}
+
+Les param\`etres importants pour la commande sont principalement la distance \`a parcourir ainsi que le temps de parcours d\'esir\'e. 
+Pour cel\`a on a besoin des variables suivantes :\\
+
+\begin{tabular}{l l}
+  \begin{minipage}{0.5\linewidth}
+    \begin{itemize}
+    \item Distance : $d$
+    \item Temps : $t_f$
+    \item Temps court : $t_s = 0.75 \times t_f$
+    \end{itemize}
+  \end{minipage}
+  &
+  \begin{minipage}{0.5\linewidth}
+    \begin{itemize}
+    \item Position de d\'epart : $p_{d\acute{e}part}$
+    \item Position courante : $p_{courante}$
+    \item Gain : $K$
+    \end{itemize}
+  \end{minipage}
+\end{tabular}
+\vspace{5mm}
+
+Le param\`etre $t_s$ permet d'anticiper le retard dans la commande. Effectivement, les temps de communications entre l'ordinateur embarqu\'e et le micro-controleur sont difficilement estimables. D'autre part il existe \'egalement un laps de temps non n\'egligeable entre la r\'eception de la commande par le micro-controleur et l'application r\'eelle de celle-ci sur le servo-moteur.
+Si ces temps \'etaient finalement estim\'es nous pourrions avoir $t_s = t_f - t_{retard}$.
+
+\vspace{10mm}
+Fonction de vitesse souhait\'ee avec une vitesse nulle au point de d\'epart :
+\begin{equation}
+  v(t) := \frac{a.t^{2}}{2} + b.t
+\end{equation}
+
+En int\'egrant la fonction de vitesse on a la fonction de position impos\'ee :
+\begin{equation}
+  p(t) := \frac{a.t^{3}}{6} + \frac{b.t^2}{2} + p_{d\acute{e}part}
+\end{equation}
+
+En imposant que les conditions suivantes soient respect\'ees :
+
+$$
+  v(t) = \left\{
+  \begin{array}{l l}
+    0 & \quad \text{si $t=0$}\\
+    0 & \quad \text{si $t=t_s$}\\
+    \frac{a.t^{2}}{2} + b.t & \quad \text{sinon}\\
+  \end{array} \right.
+$$
+$$
+  p(t) = \left\{
+  \begin{array}{l l}
+    0 & \quad \text{si $t=0$}\\
+    d & \quad \text{si $t=t_s$}\\
+    \frac{a.t^{3}}{6} + \frac{b.t^2}{2} + p_{d\acute{e}part} & \quad \text{sinon}\\
+  \end{array} \right.
+$$
+
+On obtient :
+$$
+  a = -12 \times \frac{d}{{t_s}^3}~,~b=6\times \frac{d}{{t_s}^2}
+$$
+
+La commande g\'en\'er\'ee en fonction de l'erreur est alors :
+\begin{equation}
+  c(t) := K \times ( position(t) - p_{courante})
+\end{equation}
+
+Exemple :\\
+\smallfig{0.85}{images/commande}{Exemple de consigne pour $d=2$, $t_f=4$ et $K=2.5$}{fig:command}
+\newpage
+
+
+\subsection{Mise \`a l'\'echelle}
+
+\`A partir d'une valeur dans $\Re$ nous devons commander la valve controlant l'articulation.
+Le servo-moteur utilis\'e pour commander la vanne fonction avec des valeurs de commande comprisent entre 0 et 250, avec une plage [100:150] ou la consigne est trop faible pour permettre au servo-moteur de se d\'eplacer.
+\vspace{5mm}
+
+On doit donc corriger la commande %\emph{output}
+pr\'ec\'edemment calcul\'ee :
+
+\begin{enumerate}
+%\item {\bf output *= -1;} \textcolor{gray}{//Changement de direction}
+\item Valeur minimale sens positif\\
+{\bf commande$=$commande$>$0?commande$+$25:commande;}
+\item Valeur minimale sens n\'egatif\\
+{\bf commande$=$commande$<$0?commande$-$25:commande;}
+\item D\'eplace la ligne m\'ediane \`a 125\\
+{\bf commande$+=$125;}
+\item Borner la valeur dans [0:250]\\
+{\bf commande$=$commande$<$0?0:commande$>$250?250:commande;}
+\end{enumerate}
+
+\smallfig{0.75}{images/crop-fr}{Consigne envoy\'ee au servo-moteur (l'\'echelle n'est pas respect\'ee)}{fig:scale}
+
+\subsection{\emph{Chained Move}}
+\label{sub:chained}
+
+Une fois que la commande pr\'ecise fut \'elabor\'ee, \rory m'a demand\'e de construire un nouveau type de commande : "\emph{Chained Move}".
+Elle consiste en une commande aveugle avec pour param\`etres la dur\'ee de parcours et la distance (sign\'ee) \`a parcourir.
+L'objectif est d'atteindre la position finale au moment pr\'evu mais cette fois-ci avec une vitesse finale quelconque. 
+Cette commande sera lanc\'e tr\`es rapidement, toutes les $100~ms$ environ.
+Cette fonction permet de changer de consigne tr\`es r\'eguli\`erement afin de s'adapter aux mouvements du robot (retards, collisions,...).
+Afin que la position finale soit r\'eellement atteinte, une commande de pr\'ecision (voir~\ref{sec:command}) sera r\'ealis\'ee en fin de mouvement.
+
+Si le syst\`eme est vraiment aveugle, nous ne pouvons pas avoir la vitesse en d\'ebut de trajectoire.
+Dans la figure~\ref{fig:chained}, la forme du signal choisi est une droite passant par l'origine pour chacunes des dix consignes cons\'ecutives.
+\smallfig{0.65}{images/chained}{Nouvelle commande propos\'ee pour controler le bras.}{fig:chained}
+
+En connaissant la vitesse au d\'ebut de trajectoire, la forme du signal pourrait \^etre au mieux continue mais non lisse si on conserve une commande lin\'eaire.
+L'utilisation de courbes de b\'ezier ou de splines rendrait le mouvement plus agr\'eable pour un environnement peupl\'e d'humains.
+
+\newpage

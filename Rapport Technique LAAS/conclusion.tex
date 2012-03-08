@@ -1,0 +1,47 @@
+\newpage
+\section{Conclusion}
+\label{sec:conlusion}
+
+\subsection{Travaux réalisés}
+\label{sub:travauxrealises}
+A partir des travaux de \nicolas, j'ai pu réaliser différentes améliorations, chronologiquement :
+\begin{itemize}
+%\item Franchissement d'obstacles
+\item Prise en compte d'obstacles 3D complexes
+\item Utilisation de PQP pour la détection de collisions
+\item Connexion de trajectoires
+\item Contrôle du robot en temps réel
+\item Utilisation de la \emph{motion capture} pour le déplacement des obstacles
+\item Correction du \emph{drift} en temps réel
+\item Génération des \emph{swept volumes} pour le corps entier
+\item Amélioration de la vitesse du RRT
+\end{itemize}
+%\newpage
+
+\subsection{Travaux restants}
+\label{sub:travauxrestant}
+
+Il reste cependant quelques modifications à apporter :
+\begin{itemize}
+\item Prise en compte de la dynamique du robot (ZMP multi-body)
+%\item Amélioration des trajectoires obtenues par le RRT
+\item Acquisition de l'environnement via la vision pour rendre le robot complètement autonome
+%\item Création des volumes balayés plus légers pour l'intégralité du corps du robot
+\item Utilisation d'un \emph{buffer circulaire} comme zone tampon pour le contrôle
+%\item Privilégier la marche avant sans trop contraindre la recherche RRT
+\end{itemize}
+%\newpage
+
+\subsection{Conclusion générale}
+\label{sub:conclusion}
+
+Ce stage m'a permis de découvrir le monde de la robotique humanoïde qui est très différent de la robotique industrielle que l'on a pu apercevoir à l'IFMA. 
+
+%J'ai appris à bien utiliser les outils disponibles sous linux (\emph{ssh}, \emph{scp}, \emph{make}, \emph{cmake}, librairies dynamiques, ...) 
+\`A travers la lecture des articles, j'ai appris les notions de stabilité, de recherche de trajectoires, que j'ai pu ensuite appliquer sur un robot réel. 
+
+Avant mon stage, plusieurs algorithmes de replanification existaient dans la littérature \cite{Chestnutt:ICRA:2005}, mais ceux-ci utilisent seulement des obstacles 2D (ou la projection des obstacles 3D sur le sol) ce qui ne permet pas d'utiliser toutes les capacités d'un robot humanoïde, c'est-à-dire l'enjambement. D'autres algorithmes \cite{Kuffner03} prennent en compte les obstacles 3D mais n'utilisent qu'un faible nombre de pas. 
+J'ai donc utilisé un algorithme de planification utilisant des obstacles 3D \cite{baudouin:humanoids:11} afin de développer de la replanification en temps réel.
+Mes principales contributions ont été l'optimisation du code-source pour planification plus rapide, ainsi que l'utilisation de fonctions de connexion de trajectoires.
+
+Ayant travaillé avec Linux pendant six mois j'ai appris à mieux utiliser les fonctionnalités telles que \emph{ssh}, \emph{scp}, \emph{make}, \emph{cmake}, \emph{gnuplot} et l'utilité de créer nos propre librairies dynamiques lors du travail collaboratif. D'autre part, l'utilisation permanente de \emph{git} au sein du LAAS et du JRL a permis de travailler à plusieurs simultanément sur les mêmes codes-sources et de transmettre plus facilement mon travail.

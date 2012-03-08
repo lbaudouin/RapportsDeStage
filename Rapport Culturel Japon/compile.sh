@@ -1,0 +1,2 @@
+latex RapportCulturelWithPhotos.tex
+dvipdf RapportCulturelWithPhotos.dvi

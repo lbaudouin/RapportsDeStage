@@ -1,0 +1,188 @@
+\documentclass[a4paper,oneside,12pt]{article}
+
+\usepackage[english, francais]{babel}
+\usepackage[utf8]{inputenc}  
+\usepackage[T1]{fontenc}       
+\usepackage{color}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{graphicx} 
+\usepackage{makeidx}
+\usepackage{amsmath}
+
+
+\usepackage{xspace}
+\usepackage{picins}
+
+\usepackage{tikz}
+
+\newcommand{\fig}[3]{
+  \begin{figure}[h]
+    \begin{center}
+      \includegraphics[width=0.8\linewidth]{#1}
+      \caption{#2}
+      \label{#3}
+    \end{center}
+  \end{figure}
+}
+
+\newcommand{\smallfig}[4]{
+  \begin{figure}[h]
+    \begin{center}
+      \includegraphics[width=#1\linewidth]{#2}
+      \caption{#3}
+      \label{#4}
+    \end{center}
+  \end{figure}
+}
+
+\newcommand{\leo}{L\'eo B\textsc{audouin}\xspace}
+\newcommand{\rory}{Rory F\textsc{lemmer}\xspace}
+\newcommand{\chedli}{Chedli B\textsc{ouzgarrou}\xspace}
+\newcommand{\umassey}{universit\'e de Massey\xspace}
+
+\newcommand{\eme}[1]{$#1^{\grave{e}me}$}
+\newcommand{\ere}[1]{$#1^{\grave{e}re}$}
+\newcommand{\er}[1]{$#1^{er}$}
+
+\newcommand{\logo}{images/logo-IFMA.jpg}
+
+\newcommand{\titre}{Force control of anthropomorphic arm}
+\newcommand{\auteur}{\leo}
+\newcommand{\pole}{MMS -- M\'ecatronique}
+\newcommand{\file}{lbaudouin-universite.pdf}
+\newcommand{\resumeFR}{Ce rapport est un compte rendu du stage en universit\'e r\'ealis\'e dans le cadre de l'Ann\'ee Internationale. Il expose la partie technique concernant le travail effectu\'e sur le th\`eme 'Controle en force d'un bras anthropomorphe'.}
+\newcommand{\resumeEN}{This report summarize the university internship during my year abroad.
+It sets out the technical work on the theme 'Force control of anthropomorphic arm'}
+\newcommand{\motsclefsFR}{Stage universit\'e, Massey University, robotique, m\'ecatronique}
+\newcommand{\motsclefsEN}{University internship, Massey University, robotics, mechatronics}
+
+\newcommand{\saut}{\vspace{5mm}}
+
+%\setlength{\topmargin}{-1.cm}  
+\setlength{\textheight}{23.5cm}    
+\setlength{\oddsidemargin}{0.cm}
+\setlength{\evensidemargin}{0.cm}
+\setlength{\textwidth}{16.cm}
+
+\begin{document}
+
+\thispagestyle{empty}
+\textcolor{blue}{Ministère de l'Enseignement Supérieur et de la Recherche}\\
+\vspace{5mm}
+\begin{centering}
+
+  \includegraphics[width=3.0cm]{\logo} ~
+  \includegraphics[width=7.0cm]{images/logo-massey-university}
+
+\end{centering}
+
+\vspace{5mm}
+\begin{center} 
+\begin{large}
+\textbf{Rapport de Stage en Universit\'e}
+\end{large}
+\\\vspace{3mm}--\vspace{3mm}\\
+\begin{Huge}
+\textbf{\titre}
+\end{Huge}
+\\
+\vspace{10mm}
+\begin{LARGE}
+\leo\\
+
+\vspace{5mm}
+\eme{3} \textit{année -- P\^ole MMS -- Mécatronique}\\
+\end{LARGE}
+\vspace{5mm}
+\today
+\end{center}
+%\vspace{5mm}
+
+\begin{flushright}
+\begin{large}
+Universit\'e :\\
+
+%\vspace{2mm}
+\textbf{Massey University, New Zealand}\\
+
+\vspace{3mm}
+Tuteur Universit\'e :\\
+
+%\vspace{2mm}
+\textbf{\rory}\\
+
+\vspace{3mm}
+Tuteur IFMA :\\
+
+%\vspace{4mm}
+\textbf{\chedli}\\
+
+\vspace{3mm}
+Date : du 01 septembre 2011 au 10 janvier 2012
+\end{large}
+\end{flushright}
+
+\vspace{5mm}
+\begin{flushright}
+Massey University,
+\begin{footnotesize}
+Tennent Drive\\
+Palmerston North,
+4474,
+New Zealand\\
+\end{footnotesize}
+\vspace{2mm}
+
+\textcolor{red}{I\textsc{nstitut} F\textsc{ran\c{c}ais de} M\textsc{\'ecanique} A\textsc{vanc\'ee}}\\
+\begin{footnotesize}
+\textcolor{blue}{C\textsc{ampus de} C\textsc{lermont}-F\textsc{errand} - L\textsc{es} C\textsc{\'ezeaux} - \textsc{bp} 265\\
+63175 A\textsc{ubi\`ere} C\textsc{edex} - F\textsc{rance}}\\
+\textcolor{blue}{T\textsc{el}. +33 (0)4 73 28 80 00 - F\textsc{ax} +33 (0)4 73 28 81 00\\
+leo.baudouin@ifma.fr -} \textcolor{red}{www.ifma.fr}\\
+\end{footnotesize}
+\end{flushright}
+
+\newpage
+\input{identification}
+\newpage
+\pagestyle{empty}
+
+\fancyhf{}
+\fancyhead[L]{Rapport de Stage en Universit\'e}
+\fancyfoot[R]{\thepage/\pageref{LastPage}}
+\fancyfoot[L]{\leo~-~ \eme{3} \textit{année MMS - Mécatronique}}
+
+%Table of contents
+
+\pagestyle{fancy}
+\tableofcontents
+\addtocontents{toc}{\protect\thispagestyle{fancy}}
+\addtocontents{toc}{\protect\pagestyle{fancy}}
+
+\newpage
+
+\input{avant-propos}
+\newpage
+
+\input{introduction}
+\newpage
+
+\input{section1}
+\newpage
+
+\input{section2}
+\newpage
+
+\input{section3}
+\newpage
+
+\input{conclusion}
+\newpage
+
+%\bibliographystyle{plain}
+%\bibliography{./main}
+\newpage
+
+%\input{appendix}
+\end{document}

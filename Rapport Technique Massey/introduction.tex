@@ -1,0 +1,64 @@
+\section{Introduction}
+\label{sec:intro}
+
+\subsection{Massey University}
+\label{sub:massey}
+
+\parpic{\includegraphics[width=2.2cm]{images/logo-massey-university-only.jpg}} 
+%\noindent 
+L'\umassey, cr\'e\'ee en 1927, est l'une des plus grandes de Nouvelle-Z\'elande avec environ 36000 \'etudiants et 3200 enseignants/chercheurs.
+Les \'etudiants sont r\'epartis dans les trois grands campus qui formant l'\umassey, le campus Albany (\`a Auckland), celui de Wellington, et enfin Manawatu (\`a Palmerston North). C'est dans ce dernier, comptant environ 9000 \'etudiants, que j'ai effectu\'e mon stage en universit\'e.
+
+Ce campus est le plus grand campus de la r\'egion car il est tr\`es polivalant, les principaux domaines enseign\'es \`a Palmerston North sont :
+\begin{itemize}
+\item le commerce
+\item les arts
+\item l'\'education
+\item les sciences humaines et sociales
+\item les sciences
+\end{itemize}
+\vspace{5mm}
+
+J'ai travaill\'e au sein du d\'epartement SEAT\footnote{School of Engineering and Advanced Technology} regroupant environ 80 enseignants/chercheurs ainsi qu'un grand nombre de stagiaires et de doctorants. De nombreux projets y sont r\'ealis\'es en partenariat avec des entreprises comme la cr\'eation d'un robot pour la cueillette de fruits, principalement les kiwis, ou des bancs de test pour la calibration et l'inspection des pommes.
+
+\subsection{Junior}
+\label{sub:junior}
+
+Le projet \emph{Junior} est un projet consistant \`a mettre au point un robot qui aura pour objectif principal l'aide \`a domicile pour les personnes \`a mobilit\'e r\'eduite. Ce sujet est de plus en plus important dans le monde de la robotique mobile, on retrouve d\'ej\`a plusieurs autres robots tr\`es connus tels que la gamme des HRP, le PR-2, ASIMO ou Nao.
+
+Le robot \emph{Junior} (voir figure~\ref{fig:junior}) a \'et\'e con\c{c}u par l'\umassey dans un projet dirig\'e par \rory. Ce dernier souhaiterait que \emph{Junior} soit capable de pr\'eparer un petit d\'ejeuner en cassant des {\oe}ufs, de nettoyer des toilettes en appliquant une force constante tout en effectuant un cercle ou toutes autres applications n\'ecessitant un controle pr\'ecis de la force exerc\'ee par l'effecteur.
+Pour cela deux bras \`a six degr\'es de libert\'e d'une longueur maximale de $850~mm$ sont mont\'es sur une base roulante.
+
+\smallfig{0.4}{images/Small/junior.jpg}{Le robot Junior en cours de montage.}{fig:junior}
+
+\begin{table}[h]
+	\begin{center}
+		\begin{tabular}{|c|c|}
+		\hline
+		\multicolumn{2}{|c|}{Caract\'eristique}\\
+		\hline
+		Hauteur & $\sim~95~cm$\\
+		Largeur & $\sim~65~cm$\\
+		Longueur & $\sim~80~cm$\\
+		Poids & $\sim~100~kg$\\
+		Pression maximale & $\sim~10~bars$\\
+		Charge effective & $\sim~30~kg$\\
+		Vitesse de d\'eplacement & $inconnue$\\
+		\hline
+		\end{tabular}
+	\end{center}
+	\caption{Caract\'eristiques de \emph{Junior}}
+\end{table}
+
+Ce robot est relativement robuste car il utilise l'\'energie hydraulique. Cette carat\'eristique est int\'eressante du point de vue de la charge effective support\'ee mais apporte quelques difficult\'es suppl\'ementaires que nous verrons par la suite.
+\newpage
+
+Pour mes exp\'eriences, il m'a \'et\'e fourni un bureau avec un ordinateur sous Window 7 pour programmer en VB et en C avec un logiciel de version d\'emo : Atollic True STUDIO.
+Un autre ordinateur sous Windows XP m'a \'egalement \'et\'e pr\'et\'e afin de r\'ealiser les exp\'eriences.
+Pour le mat\'eriel, un bras de \emph{Junior} suppl\'ementaire a \'et\'e usin\'e (voir figure~\ref{fig:arm}). Un micro-controleur STM3210C-EVAL (voir figure~\ref{fig:stm}), cadenc\'e \`a $72~MHz$ permettra de commander les articulations du robot. 
+\saut
+
+\smallfig{0.65}{images/Small/bras.jpg}{Coude de \emph{Junior}, un degr\'e de libert\'e.}{fig:arm}
+
+\smallfig{0.4}{images/Small/micro.jpg}{Micro-controleur STM3210C-EVA.}{fig:stm}
+

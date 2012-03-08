@@ -1,0 +1,168 @@
+\documentclass[a4paper,oneside,12pt]{article}
+
+\usepackage[english, francais]{babel}
+\usepackage[utf8]{inputenc}  
+\usepackage[T1]{fontenc}       
+\usepackage{color}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{graphicx} 
+\usepackage{makeidx}
+\usepackage{xspace}
+\usepackage{pdfpages}
+
+\newcommand{\leo}{L\'eo B\textsc{audouin}\xspace}
+\newcommand{\olivier}{Olivier S\textsc{tasse}\xspace}
+\newcommand{\eiichi}{Eiichi Y\textsc{oshida}\xspace}
+\newcommand{\nicolas}{Nicolas P\textsc{errin}\xspace}
+\newcommand{\philippe}{Philippe M\textsc{artinet}\xspace}
+\newcommand{\florent}{Florent L\textsc{amiraux}\xspace}
+\newcommand{\thomas}{Thomas M\textsc{oulard}\xspace}
+\newcommand{\abder}{Abderrahmane K\textsc{heddar}\xspace}
+
+\newcommand{\eme}[1]{$#1^{\grave{e}me}$}
+\newcommand{\ere}[1]{$#1^{\grave{e}re}$}
+\newcommand{\er}[1]{$#1^{er}$}
+
+\newcommand{\logo}{images/Logo-UBP.png}
+
+\newcommand{\titre}{Replanification en temps réel pour les robots humano\"\i des}
+\newcommand{\auteur}{\leo}
+\newcommand{\pole}{MSIR~--~IV}
+\newcommand{\file}{lbaudouin-master.pdf}
+\newcommand{\resumeFR}{Rapport de stage de Master recherche. Il expose notamment les méthodes utilisées pour la planification de pas pour les robots humanoïdes. Il présente également les résultats des expériences menées dans les laboratoire du CNRS.}
+\newcommand{\resumeEN}{Master research report. It shows the methods used for the footstep planning for humanoid robots. It also presents the results of experiments made in CNRS laboratory.}
+\newcommand{\motsclefsFR}{Stage Master recherche, JRL, robotique humano\"\i de, replanification}
+\newcommand{\motsclefsEN}{Master research internship, JRL, humanoid robotic, replanning}
+
+%\setlength{\topmargin}{-1.cm}  
+\setlength{\textheight}{23.5cm}    
+\setlength{\oddsidemargin}{0.cm}
+\setlength{\evensidemargin}{0.cm}
+\setlength{\textwidth}{16.cm}
+
+\begin{document}
+
+\thispagestyle{empty}
+\textcolor{blue}{Ministère de l'Enseignement Supérieur et de la Recherche}\\
+\vspace{5mm}
+\begin{centering}
+
+  \includegraphics[width=3.0cm]{\logo} ~
+  \includegraphics[width=3.0cm]{images/Logo-AIST.jpg} ~
+  \includegraphics[width=3.0cm]{images/Logo-LAAS-CNRS.jpg}
+
+\end{centering}
+
+\vspace{5mm}
+\begin{center} 
+\begin{large}
+\textbf{Rapport de Stage Master Recherche}
+\end{large}
+\\\vspace{3mm}--\vspace{3mm}\\
+\begin{Huge}
+\textbf{\titre}
+\end{Huge}
+\\
+\vspace{10mm}
+\begin{LARGE}
+\leo\\
+
+\vspace{5mm}
+%\eme{3} \textit{année -- P\^ole MMS -- Mécatronique}\\
+Modèles, Systèmes, Imagerie, Robotique\\
+\end{LARGE}
+\begin{large}
+Image et Vision\\
+\end{large}
+\vspace{5mm}
+\today
+\end{center}
+%\vspace{5mm}
+
+\begin{flushright}
+\begin{large}
+Entreprise :\\
+
+%\vspace{2mm}
+\textbf{CNRS-AIST, JRL}\\
+
+\vspace{3mm}
+Tuteur entreprise :\\
+
+%\vspace{2mm}
+\textbf{\olivier}\\
+
+\vspace{3mm}
+Tuteur double cursus IFMA :\\
+
+%\vspace{4mm}
+\textbf{\philippe}\\
+
+\vspace{3mm}
+Date : du 14 février au 15 ao\^ut 2011
+\end{large}
+\end{flushright}
+
+\vspace{5mm}
+\begin{flushright}
+CNRS-AIST, JRL (Joint Robotics Laboratory),
+UMI 3218/CRT\\
+\begin{footnotesize}
+AIST Central 2, Umezono 1-1-1,
+Tsukuba, Ibaraki 305-8568 Japan\\
+\end{footnotesize}
+\vspace{2mm}
+
+\textcolor{red}{U\textsc{niversit\'e} B\textsc{laise} P\textsc{ascal}}\\
+\begin{footnotesize}
+\textcolor{blue}{C\textsc{ampus de} C\textsc{lermont}-F\textsc{errand}\\
+24 A\textsc{venue des} L\textsc{andais} - \textsc{bp} 80026\\
+63171 A\textsc{ubi\`ere} C\textsc{edex} - F\textsc{rance}}\\
+\textcolor{red}{leo.baudouin@ifma.fr}
+\end{footnotesize}
+\end{flushright}
+
+\newpage
+\input{identification}
+\newpage
+\pagestyle{empty}
+
+\fancyhf{}
+\fancyhead[L]{Rapport de Stage Master Recherche}
+\fancyfoot[R]{\thepage/\pageref{LastPage}}
+\fancyfoot[L]{\leo~-~\emph{Double Cursus IV}}
+
+%Table of contents
+
+\pagestyle{fancy}
+\tableofcontents
+\addtocontents{toc}{\protect\thispagestyle{fancy}}
+\addtocontents{toc}{\protect\pagestyle{fancy}}
+
+\newpage
+
+\input{avant-propos}
+\newpage
+
+\input{introduction}
+\newpage
+
+\input{section1}
+\newpage
+
+\input{section2}
+\newpage
+
+\input{section3}
+\newpage
+
+\input{conclusion}
+\newpage
+
+\bibliographystyle{plain}
+\bibliography{./main}
+\newpage
+
+\input{appendix}
+\end{document}

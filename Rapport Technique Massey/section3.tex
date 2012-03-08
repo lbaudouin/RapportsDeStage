@@ -1,0 +1,59 @@
+\section{R\'esultats}
+\label{sec:result}
+
+\subsection{Commande}
+Le programme utilisé sur le micro-controleur permet de choisir le gain appliqué sur la consigne.
+ Sur l'exemple de la figure~\ref{fig:gain}, avec un gain unitaire la réponse a un retard assez important ce qui ne permet pas toujours de terminer le mouvement.
+ Avec un gain de 3, nous pouvons voir que la réponse oscille car le système tente de rattraper son retard trop rapidement.
+ Dans notre cas à 8 bars, un gain de 2 est alors retenu.
+ 
+\smallfig{1}{images/gain}{Influence du gain lors d'un déplacement de 580 incréments en 10 secondes.}{fig:gain}
+  
+En fonction de la pression utilisée dans le système final il faudra adapter ce gain.
+Sachant que la pression ne sera pas constante, il faudra créer une table de conversion ou déterminer une fonction de conversion.
+N'ayant pas obtenu de baromètre précis je n'ai pas été en mesure de réaliser ceci.
+\saut 
+ 
+ 
+ Dans la figure~\ref{fig:stop}, le bras a été bloqué à la deuxième seconde du mouvement.
+ Le retard est donc de plus en plus important impliquant une commande également plus importante.
+ Le bras étant bloqué, la pression augmente au sein du piston.
+ 
+ Sur le deuxième graphique, on peut voir une pression négative et qui diminue lors du blocage.
+ Ceci est du à la partie de code permettant la lecture du capteur de pression qui utilise une table de conversion qui ne correspond pas au capteur qui m'a été fourni.
+ 
+  \smallfig{1}{images/stop}{Blocage du bras lors d'un mouvement.}{fig:stop}
+  
+ D'autre part nous pouvons remarquer que la pression oscille sur le segment de temps $[2.5:5.5]$ alors qu'elle ne devrait pas, car tous les corps solides sont bloqués.
+ Ce ph\'enom\`ene est due \`a la pompe hydraulique utilis\'ee qui ne garantie pas une pression constante.
+ 
+\subsection{Programmes}
+ 
+\subsubsection*{"Temps r\'eel"}
+
+ Les micro-controleurs utilis\'es afin de commander les articulations du robot sont suceptibles de subir des perturbations dans le suivi du temps.
+ Si les calculs \`a r\'ealiser sont trop longs, la valeur du temps fourni par le micro-controleur est allong\'e.
+ Ce d\'efaut pourrait avoir des cons\'equences grave dans certain cas n\'ecessitant un contr\^ole du temps pr\'ecis.
+ 
+ 
+ \subsubsection*{Pr\'ecision de lecture}
+ 
+ Le capteur de position est un capteur absolu \`a 4096 positions.
+ La valeur envoy\'ee est donc tr\`es fiable, avec une pr\'ecision de 0.175~degr\'es.
+ Cependant afin de lire la valeur, le micro-controleur doit calculer le ratio $\frac{\text{Temps au niveau}}{\text{P\'eriode}}$.
+ Le calcul de ces temps fait apparaitre certaines valeurs aberrantes qui doivent \^etre filtr\'ees.
+ 
+ La valeur de la pression est quand \`a elle moins pr\'ecise.
+ Le capteur\footnote{PX26-250DV} fourni une valeur qui d\'epend de sa tension d'alimentation.
+ A l'aide du g\'en\'erateur utilis\'e nous ne pouvons garantir une pr\'ecision inf\'erieure \`a 1 volt ce qui implique une erreur de 5 \`a 10\% sur la valeur d\'elivr\'ee.
+ 
+La somme des erreurs dans chacunes des articulations pourra fausser le r\'esultat final et rendre certains objectifs irr\'ealisables, comme celui d'utiliser \emph{Junior} afin d'attraper et de casser des {\oe}ufs.
+ 
+ \subsection*{Temps de transfert}
+ 
+Le robot est supervis\'e par un programme en Visual Basic sur un ordinateur portable.
+Il faut donc communiquer entre cette entit\'e et le micro-controleur.
+Ceci est r\'ealis\'e via un port s\'erie simul\'e \`a 19200~bauds sur le micro-controleur et connect\'e sur un port USB de l'ordinateur.
+Toutes les commandes sont donc envoy\'ees sous forme d'une chaine de caract\`eres comportant au minimum une action (une lettre) et trois param\`etres (flotants).
+Cette technique oblige le micro-controleur \`a renvoyer une confirmation de r\'eception des messages, et ralenti donc \'enorm\'ement la vitesse de r\'ealisation des t\^aches.
+
