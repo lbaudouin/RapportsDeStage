@@ -1,0 +1,132 @@
+\documentclass[a4paper,oneside,12pt]{article}
+
+\usepackage[english, francais]{babel} %Charge les langues
+\usepackage[utf8]{inputenc} %Prise en charge des accents
+%\usepackage[T1]{fontenc} %Changement de police (à vérifier)
+\usepackage{color} %Charge les couleurs
+\usepackage{fancyhdr} %Utilisation des entêtes
+\usepackage{lastpage} %Script pour avoir le nombre de pages
+\usepackage{graphicx} %Permet d'include des images
+%\usepackage{makeidx} 
+%\usepackage{amsmath}
+\usepackage{xspace} %Espaces intelligents
+%\usepackage{picins} %Permet de faire des sous-figures
+\usepackage{tikz} %Permet de dessiner
+
+\newcommand{\fig}[3]{
+  \begin{figure}[h]
+    \begin{center}
+      \includegraphics[width=0.8\linewidth]{#1}
+      \caption{#2}
+      \label{#3}
+    \end{center}
+  \end{figure}
+}
+
+\newcommand{\smallfig}[4]{
+  \begin{figure}[h]
+    \begin{center}
+      \includegraphics[width=#1\linewidth]{#2}
+      \caption{#3}
+      \label{#4}
+    \end{center}
+  \end{figure}
+}
+
+%Noms
+\newcommand{\leo}{L\'eo \textsc{Baudouin}\xspace}
+
+%Logos
+\newcommand{\logoIFMA}{images/logo-IFMA.jpg}
+\newcommand{\logoIP}{images/logo-IP.jpg}
+\newcommand{\logoLASMEA}{images/logo-LASMEA.png}
+\newcommand{\logo}{images/videH.jpg}
+
+%Informations
+\newcommand{\titre}{Rapport de Projet de fin d'\'Etude}
+\newcommand{\sujet}{Multi-Robots mapping/localisation and navigation using omnidirectional vision}
+\newcommand{\auteur}{\leo}
+\newcommand{\pole}{MMS -- M\'ecatronique}
+\newcommand{\annee}{\eme{4} \textit{année -- P\^ole MMS -- Mécatronique}}
+\newcommand{\dates}{du 01 mars 2012 au 29 février 2015}
+\newcommand{\lieu}{Institut Pascal (LASMEA), France}
+\newcommand{\adresse}{Institut Pascal (LASMEA)\\
+  \begin{footnotesize}
+UMR 6602 UBP / CNRS\\
+Campus des Cézeaux\\
+24, Avenue des Landais\\
+63177 \textsc{Aubière} Cedex, \textsc{France} 
+  \end{footnotesize}
+}
+\newcommand{\tuteur}{Youcef \textsc{Mézouar}}
+\newcommand{\tuteurIFMA}{Belhassen-Chedli \textsc{Bouzgarrou}}
+
+%Identification du document
+\newcommand{\file}{RapportPIFE-lbaudouin.pdf}
+\newcommand{\resumeFR}{resumeFR}
+\newcommand{\resumeEN}{resumeEN}
+\newcommand{\motsclefsFR}{keywordFR}
+\newcommand{\motsclefsEN}{keywordEN}
+
+%Fonctions personnelles
+\newcommand{\saut}{\vspace{5mm}}
+\newcommand{\eme}[1]{$#1^{\grave{e}me}$}
+\newcommand{\ere}[1]{$#1^{\grave{e}re}$}
+\newcommand{\er}[1]{$#1^{er}$}
+
+%Défninition des longueurs
+%\setlength{\topmargin}{-1.cm}  
+\setlength{\textheight}{23.5cm}    
+\setlength{\oddsidemargin}{0.cm}
+\setlength{\evensidemargin}{0.cm}
+\setlength{\textwidth}{16.cm}
+
+%Début du document
+\begin{document}
+
+\input{pagedegarde}
+\newpage
+
+\input{identification}
+\newpage
+
+%Style des pages
+\pagestyle{empty}
+\fancyhf{} %Entête automatique désactivée (mettre en commentaire pour l'activer)
+\fancyhead[L]{Rapport de Projet de fin d'\'Etude}
+\fancyfoot[R]{\thepage/\pageref{LastPage}}
+\fancyfoot[L]{\leo~-~\annee}
+
+%Sommaire
+\pagestyle{fancy}
+\tableofcontents
+\addtocontents{toc}{\protect\thispagestyle{fancy}}
+\addtocontents{toc}{\protect\pagestyle{fancy}}
+\newpage
+
+\input{avant-propos}
+\newpage
+
+\input{introduction}
+\newpage
+
+\input{section1}
+\newpage
+
+\input{section2}
+\newpage
+
+\input{section3}
+\newpage
+
+\input{conclusion}
+\newpage
+
+%Bibliographie
+%\bibliographystyle{plain}
+%\bibliography{./main}
+\newpage
+
+%Annexes
+%\input{appendix}
+\end{document}
