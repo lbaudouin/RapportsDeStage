@@ -5,12 +5,15 @@ Cette partie sera une partie théorique concernant la reconstruction 3D. Dans un
 \subsection{Reconstruction 3D}
 \label{sub:reconstruction}
 
-La reconstruction 3D à partir de deux vues perspective a été très bien formalisé dans le livre de Hartley et Zisserman \cite{HartleyBook}.
+La reconstruction 3D à partir de deux vues perspective a été très bien formalisé dans le livre de Hartley et Zisserman \cite{Hartley03Book}.
 
 En prenant deux vues d'une même caméra perspective, nous devons calculer le déplacement $\mathbf{R}$ et $\mathbf{t}$ entre les lieux de prise de vue.
 
 \begin{equation}
-s \begin{pmatrix}u \\ v \\ 1\end{pmatrix} = \begin{pmatrix}f_u && 0 && u_0 \\ 0 && f_v && v_0 \\ 0 && 0 && 1\end{pmatrix} . \begin{pmatrix}r11 && r12 && r13 && t1 \\ r21 && r22 && r23 && t2 \\ r31 && r32 && r33 && t3\end{pmatrix} . \begin{pmatrix}X \\ Y \\ Z \\ 1\end{pmatrix} 
+s \underbrace{\begin{pmatrix}u \\ v \\ 1\end{pmatrix}}_{\mathbf{m}} = 
+\underbrace{\begin{pmatrix}f_u && 0 && u_0 \\ 0 && f_v && v_0 \\ 0 && 0 && 1\end{pmatrix}}_{\mathbf{K}} . 
+\underbrace{\begin{pmatrix}r11 && r12 && r13 && t1 \\ r21 && r22 && r23 && t2 \\ r31 && r32 && r33 && t3\end{pmatrix}}_{[\mathbf{R~t}]} . 
+\underbrace{\begin{pmatrix}X \\ Y \\ Z \\ 1\end{pmatrix}}_{\mathbf{X}} 
 \end{equation}
 
 \begin{equation}
@@ -21,8 +24,8 @@ Avec :
 \item $\mathbf{m}$ le point dans l'image
 \item $\mathbf{P}$ la matrice de projection 
 $\mathbf{P} = [ \mathbf{R} ~ \mathbf{t} ]$
-\item $\mathbf{K}$ la matrice des paramètres intrinsèques
-\item $s$ un réel quelconque ($s \in \Re$)
+\item $\mathbf{K}$ la matrice des paramètres intrinsèques (calibration)
+\item $s$ est un facteur réel quelconque ($s \in \Re$)
 \end{itemize}
 
 A partir des correspondances de points dans les deux images, nous pouvons calculer la matrice fondamentale $\mathbf{F}$ définie par (eq~\ref{eq:fondamentale})
@@ -39,10 +42,11 @@ A partir de cette matrice nous pouvons avoir la matrice essentielle $\mathbf{E}$
 
 Une autre formulation de $\mathbf{E}$ est :
 \begin{equation}
-\mathbf{E} = \mathbf{R} [\mathbf{t}]_x
+\mathbf{E} = \mathbf{R} . [\mathbf{t}]_x
 \end{equation}
-Avec $[\mathbf{t}]_x$ la matrice anti-symétrique\footnote{Si $\mathbf{t}=\begin{pmatrix}t_1\\t_2\\t_3\end{pmatrix}$, Alors $[\mathbf{t}]_x=\begin{pmatrix}0&-t_3&t_2\\t_3&0&-t_1\\-t_2&t_1&0\end{pmatrix}$} du vecteur $\mathbf{t}$.
-Nous pouvons maintenant extraire $\mathbf{R}$ et $\mathbf{t}$:
+Avec $[\mathbf{t}]_x$ la matrice anti-symétrique\footnote{Si $\mathbf{t}=\begin{pmatrix}t_1\\t_2\\t_3\end{pmatrix}$, alors $[\mathbf{t}]_x=\begin{pmatrix}0&-t_3&t_2\\t_3&0&-t_1\\-t_2&t_1&0\end{pmatrix}$} du vecteur $\mathbf{t}$.
+
+Nous pouvons maintenant extraire $\mathbf{R}$ et $\mathbf{t}$. Pour celà nous devons décomposer la matrice essentielle :
 $$\mathbf{E}=\mathbf{U} \mathbf{\Sigma} \mathbf{V}^T$$
 Nous avons, $ \mathbf{\Sigma} = \begin{pmatrix}s&0&0\\0&s&0\\0&0&0\end{pmatrix}$, alors:
 \begin{equation}

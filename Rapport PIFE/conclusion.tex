@@ -1,1 +1,22 @@
 \section{Conclusion}
+
+Malgré 15000 lignes de code pour le début d'une bibliothèque écrite en C++ pour réaliser mes travaux, je n'ai pas encore réussi à obtenir de résultats concluants pour la création et fusion de cartes pour la robotique.
+
+Cette bibliothèque permet actuellement de construire un nuage de points 3D à partir d'une vidéo issue d'une caméra perspective calibrée.
+Le cas de la caméra catadioptrique est presque opérationnel, la convergence du recalage 3D/2D n'est pas garantie et rend donc des résultats qui peuvent être aléatoires.
+
+Le projet s'étend sur trois années et devra au final permettre de controler une flotte de robots de façon autonome.
+Les six premiers mois de cette thèse, représentant mon stage de fin d'études, ont principalement été consacrés à l'étude bibliographique du domaine concerné par la thèse : la robotique mobile autonome, la vision omnidirectionnelle et la fusion de carte.
+En parallèle à cette étude, une partie développement d'outils de base à été réalisé comme mentionné précédement.
+
+J'ai développé ces outils à partir des cours théoriques que j'ai eu en master \emph{Image et Vision} mais également à partir de livre comme 
+\citetitle{Hartley03Book} 
+de 
+\citeauthor{Hartley03Book} 
+\cite{Hartley03Book} 
+et d'articles comme
+\citetitle{Puig08} 
+de 
+\citeauthor{Puig08} 
+\cite{Puig08}.
+J'aurais aimé pouvoir utiliser des bibliothèques ou programmes existants développés au sein du laboratoire mais je n'y ai pas eu accès (bibliothèques non libre). De plus une grande partie des chercheurs utilise des outils de prototypage tel Matlab, et donc peu de code performant en C++ sont partagés. Donc même si les méthodes sont connues et utilisées dans le laboratoire, j'ai du les redévelopper moi même afin d'avoir une bibliothèque adéquate, partagée avec la communauté de façon libre et gratuite.

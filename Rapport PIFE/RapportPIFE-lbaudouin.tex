@@ -12,6 +12,16 @@
 \usepackage{xspace} %Espaces intelligents
 %\usepackage{picins} %Permet de faire des sous-figures
 \usepackage{tikz} %Permet de dessiner
+\usepackage[backend=bibtex]{biblatex}
+\addbibresource{papers.bib}
+
+%Fonctions personnelles
+\newcommand{\saut}{\vspace{5mm}}
+\newcommand{\eme}[1]{$#1^{\grave{e}me}$}
+\newcommand{\ere}[1]{$#1^{\grave{e}re}$}
+\newcommand{\er}[1]{$#1^{er}$}
+\newcommand{\red}[1]{\textcolor{red}{#1}}
+\newcommand{\warning}[1]{\textbf{\textcolor{red}{#1}}}
 
 \newcommand{\fig}[3]{
   \begin{figure}[h]
@@ -63,16 +73,11 @@
 
 %Identification du document
 \newcommand{\file}{RapportPIFE-lbaudouin.pdf}
-\newcommand{\resumeFR}{resumeFR}
-\newcommand{\resumeEN}{resumeEN}
-\newcommand{\motsclefsFR}{keywordFR}
-\newcommand{\motsclefsEN}{keywordEN}
+\newcommand{\resumeFR}{Ce projet consiste à mettre au point des techniques de cartographies à l'aide d'une flotte de robots. La particularité consiste à utiliser des types de caméras différents sur les robots. Les robots doivent créer une carte locale de l'environnement qu'ils ont parcouru. Un algorithme de fusion de carte vient ensuite concaténer toutes les informations opbtenues dans une carte globale. Le but final est de permettre à une flotte de robots de naviguer en autonomie dans un espace donné.}
+\newcommand{\resumeEN}{This project plan to create mapping algorithms with a \warning{flotte} of robots. The main improvement is to use several type of cameras on robots. Robots have to create a local map from environment. A map merging algorithm will then concat all informations from local maps. The main issue is to allow to a \warning{flotte} of robots to navigate autonomously in given environment.}
+\newcommand{\motsclefsFR}{Robotique, navigation autonome, fusion de carte}
+\newcommand{\motsclefsEN}{Robotics, autonomous navigation, map merging}
 
-%Fonctions personnelles
-\newcommand{\saut}{\vspace{5mm}}
-\newcommand{\eme}[1]{$#1^{\grave{e}me}$}
-\newcommand{\ere}[1]{$#1^{\grave{e}re}$}
-\newcommand{\er}[1]{$#1^{er}$}
 
 %Défninition des longueurs
 %\setlength{\topmargin}{-1.cm}  
@@ -119,13 +124,17 @@
 \input{section3}
 \newpage
 
+\input{section4}
+\newpage
+
 \input{conclusion}
 \newpage
 
 %Bibliographie
 \section{Bibliographie}
-\bibliographystyle{plain}
-\bibliography{./papers}
+%\bibliographystyle{plain}
+%\bibliography{./papers}
+\printbibliography
 \newpage
 
 %Annexes

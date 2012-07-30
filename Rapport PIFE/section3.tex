@@ -1,6 +1,45 @@
-\section{Cartographie}
+\section{Stratégie}
+
+
 \subsection{Carte locale}
+
+Chaque robot aura une carte locale associée aux déplacements réalisés pendant la séquence de cartographie.
+Sur cette période, les robots sont dirigés manuellement afin de parcourir les lieux qui seviront lors de la phase de navigation autonôme.
+
+Les cartes locales sont constituées des éléments repérables et calculables par le robots.
+On retrouve donc :
+\begin{itemize}
+\item Les points d'intérêts dans l'image ainsi que leurs descripteur associés
+\item Les points 3D reconstruits
+\item La trajectoire du robot calculée
+\end{itemize}
+
+Les points d'intérêts sont extraits à l'aide de la méthode de Harris.
+Un descripteur du point lui est associé, on utilisera dans un premier temps les descripteurs SIFT\footnote{Scale Invariant Feature T}.
+D'autres type d'imagettes seront testé pour comparer les performances, comme les informations mutelle, MSER, Ogre, Surf et si aucun n'est très performant pour le cas hybride, nous mettrons au point un niveau type de descripteur.
+
 
 \subsection{Carte globale}
 
+La carte globale est la fusion de toute les cartes locales.
+Elle est construite par fusion itérative de deux cartes locales sécantes.
+
+Dans un premier temps, un ordinateur central récupère toutes les cartes locales des différents robots.
+La stratégie utilisée pour la fusion est la suivante :
+\begin{enumerate}
+\item A partir de deux nuages de points 3D, on cherche les correspondances 3D/3D, c'est-à-dire comment doit être déplacer le deuxième nuage de points 3D pour se superposé au mieux avec le premier.
+Plusieurs solutions pourront être retournés.
+\item Afin de rejeté les mauvaises solutions, on testera si les points 3D mis en correspondances sont réellement les même en comparant leurs descripteurs respectifs.
+\item si le nombre de points 3D en correspondance restant est suffisant, la fusion de carte peut avoir lieux.
+On applique la tranformation (rotation, translation, echelle) à la deuxième carte et on ajoute tous les points à la première.
+\end{enumerate}
+
 \subsection{Navigation}
+
+L'étape de navigation ne peut s'effectuer qu'une fois les cartes crées.
+Le but final étant de pouvoir se déplacer de façon autonome d'un point A à un point B.
+Dans cette thèse il faudra que les deux points appartiennent à l'espace observé lors de la création des cartes.
+
+L'exploration autonome est un autre thème qui pourra peut-être être le sujet d'une étude en fin de thèse.
+
+
