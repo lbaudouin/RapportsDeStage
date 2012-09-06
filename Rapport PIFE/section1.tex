@@ -1,1 +1,157 @@
-\section{Etat de l'art}
+\section{État de l'art}
+
+\subsection{Vision, Reconstruction 3D}
+
+\subsubsection{Vision classique}
+
+Nos robots seront équipés de caméras de types différents, On va donc commencer par traiter au cas par cas les algorithmes nécessaires pour les caméras.
+La caméra la plus courante est la caméra perspective (ou \textit{pinhole} en anglais).
+De très nombreux ouvrages existent sur la reconstruction à l'aide d'une caméra perspective, on retrouve notamment  \citetitle{Hartley03Book} de \citeauthor{Hartley03Book} \cite{Hartley03Book}.
+A partir de d'images successives issues d'un même capteur, nous pouvons reconstruire un modèle 3D de l'environnement parcouru.
+Une fois un nuage de points obtenu, nous pouvons affiner ce modèle en effectuant un ajustement de faisceaux (\textit{bundle adjustement}), cette opération consiste à passer un Levenberg-Marquart sur les données afin de minimiser les erreurs de projection.
+
+Cependant une dérive apparaît ...
+
+
+\subsubsection{Vision mixte}
+
+L'utilisation complémentaire de caméras omnidirectionnelles, nous pouvons nous demander si nous pouvons utiliser les deux types de caméras simultanément afin de créer le nuage de point.
+On retrouve ce genre de travaux quand les travaux de
+\citeauthor{Sturm02}, \citetitle{Sturm02} \cite{Sturm02}.
+Certains problèmes reste cependant à éclaircir, comme la calibration des caméras omnidirectionnelles.
+
+En lisant ce papier, on se demande alors comment extraire les variables intéressantes comme la matrice essentielle ou les matrices de rotation et de translation.
+
+Une autre question consiste à trouvé un moyen de trouver des points correspondants entre les images perspectives et les images omnidirectionnelles.
+Le papier \cite{Puig08} utilise l'algorithme SIFT\footnote{Scale Invariant Feature Transform}.
+Il construit ensuite une matrice fondamentale à l'aide des correspondances.
+On retrouve des matrices $\mathbf{F}_{43}$, $\mathbf{F}_{63}$ and $\mathbf{F}_{66}$.
+On retrouve le même problème que pour le papier précédent pour avoir les matrices importantes \textbf{R} et \textbf{t} ou \textbf{E} depuis $\mathbf{F}_{xx}$?
+
+\newpage
+
+\begin{minipage}[c]{0.5\textwidth}
+\centering
+\includegraphics[width=3.0in]{images/Bastanlar09.png}
+\captionof{figure}{Caption for image}
+\label{fig:sample_figure}
+\end{minipage}
+\begin{minipage}[c]{0.5\textwidth}
+
+
+  %\begin{tabular}{l l}
+    %\begin{minipage}{0.5\linewidth} 
+    %\smallfig{0.5}{images/Bastanlar09.png}{[Bastanlar09PhD] Structure from Motion for Systems with Perspective and Omnidirectional Cameras}{fig:bastanlar}
+    %\end{minipage}  
+    %&
+    %\begin{minipage}{0.5\linewidth}
+      SfM with hybrid system [Bastanlar09PhD] Structure from Motion for Systems with Perspective and Omnidirectional Cameras\\
+        Compute 3D reconstruction with hybrid pair of cameras.\\
+        $$q_p^t K_p^{-t} ~E~ \theta^t \hat{K}_c^t \hat{q}_c = 0$$\\
+        $\Rightarrow$ No information on calibration of omnidirectional camera $\hat{K}_c$ (see Puig PhD page 25)
+        %No information on \textbf{E} computation and \textbf{R},\textbf{t} extraction.
+    \end{minipage}
+  %\end{tabular}
+  
+  %\begin{tabular}{l l}
+        \smallfig{0.5}{images/Goedeme07.png}
+        {[Goedemé07] Omnidirectional Vision based Topological Navigation}{fig:goedeme}
+    %&
+    %\begin{minipage}{0.5\linewidth}
+        Les lignes sont particulièrement présentes dans les environnements intérieurs, beaucoup moins en extérieur. Elles ne peuvent donc pas servir de repères uniques dans notre cas.
+
+    %\end{minipage}
+  %\end{tabular}
+  
+    Les pricipales amères utilisées sont :
+    \begin{itemize}
+    \item Les points : les appariements se font avec principalement SIFT
+    \item Les droites : détection de droites verticales (droites se coupant au centre de l'image), droites parallèles (sous forme de coniques dans l'image)
+    \end{itemize}
+    
+    
+    
+   \smallfig{0.2}{images/Rituerto10.png} {[Rituerto10] Visual slam with an omnidirectional camera} {fig:rituerto}
+        Utilisation du filtre de Kalman (EKF\footnote{Extended KalmanFilter}) avec une caméra omnidirectionnelle. Utilisation de SIFT pour les mises en correspondances. Il obtient de meilleurs résultats qu'avec un SLAM classic. 
+  
+  
+  
+ \smallfig{0.2}{images/Dame10.png}
+        {[Dame10PhD] A unified direct approach for visual servoing and visual tracking using mutual information} {fig:dame}
+        Dame propose un moyen de comparaison de deux imagettes plus performant que les algorithmes proposés : SSD\footnote{Sum of Squared Differences} or ZNCC\footnote{Zero-mean Normalized\\Cross Correlation}.
+    Comparer MI avec SIFT, SURF et autres descripteurs lors des cas de vision hybride perspective/catadioptrique.  
+  
+\subsection{Fusion de cartes}
+
+ \smallfig{0.2}{images/Konolige03.png}
+        {[Konolige03] Map Merging for Distributed Robot Navigation}
+      {fig:konolige}
+        Basé sur une méthode de vraisemblance (likehood), Konolige permet de re-situer une sous-partie de carte au sein d'une carte globale ayant un a-priori sur la position.\\
+        $\Rightarrow$ Utilisation de carte dense telle qu'une cartographie laser.
+
+
+
+
+\smallfig{0.2}{images/Gutmann99.png}
+        {[Gutman99] Incremental Mapping of Large Cycle Environments}
+      {fig:gutmann}
+        Ce papier parle de la recherche de recouvrement de scan dans une démarche d'exploration d'environnement. 
+        Il utilise des parties de la carte globale afin de voir si le motif se retrouve autre part dans la carte pour effectuer une fermeture de boucle.\\
+        $\Rightarrow$ Utilisation de carte dense telle qu'une cartographie laser.
+        
+        
+        
+\smallfig{0.2}{images/Strasdat10.png}
+        {[Strasdat10] Scale Drift-Aware Large Scale Monocular SLAM}
+      {fig:strasdat}   
+        Ajustement de faisceaux pour un environnement extérieur large.\\
+        Un pré-ajustement est effectué avec une fenêtre glissante (quelques images), puis une fois la fermeture de boucle détectée, un ajustement global sur 7 degrés de liberté (rotation, translation échelle) est effectué. 
+
+
+
+\smallfig{0.2}{images/Korrapati11.png}
+        {[Korrapati11] Efficient Topological Mapping with Image Sequence Partitionning}
+      {fig:korrapati}  
+        Pour les expériences avec une caméra omnidirectionnelle, un système de gestion des amères à été mis en place afin de pouvoir retrouver rapidement les fermetures de boucle.\\
+        Ce système pourra être utilisé dans le cas de notre étude (voir SOVIN).
+
+
+
+\subsection{Multi-robots}
+
+\smallfig{0.2}{images/Hukui10.png}
+      {[Hukui10] Mutual Localization of Sensor Node Robots}
+      {fig:hukui}  
+        Utilisation des connaissances sur les positions relatives des robots afin d'améliorer la qualité de la localisation globale.\\
+        $\Rightarrow$ Comment localiser les robots entre eux ?
+
+
+\smallfig{0.2}{images/Howard06.png}
+       {[Howard06] Multi-robot Simultaneous Localiszation and Mapping using Particule Filters}
+      {fig:howard}  
+      
+      
+      
+\smallfig{0.2}{images/Aragues11.png}
+      {[Aragues11PhD] Distributed Algorithms on Robotic Nectwoks for Coordination in Perception Tasks}
+      {fig:aragues}  
+        [Aragues11PhD] Distributed Algorithms on Robotic Netwoks for Coordination in Perception Tasks\\
+        Map merging with multi robots, one camera type. Use SIFT/SURF and 3D points.\\
+        $\Rightarrow$ Improve with mutli-camera sensors. 
+        
+        
+        
+\subsection{SoViN}
+
+
+\smallfig{0.2}{images/sovin.png}
+        {Interface du logiciel \emph{Sovin} par J. Courbon}
+      {fig:SOVIN}       
+        La librairie \emph{Sovin} développée par J. Courbon permet une gestion optimisée des points 2D/3D mais également des images/descripteurs.\\
+        Pour pouvoir l'utiliser dans le cadre de ma thèse il faut donc ajouter/revoir les blocks suivants :
+        \begin{itemize}
+        \item Vision hybride
+        \item Fermeture de boucles
+        \item Information mutuelle
+        \item Multi-robots
+        \end{itemize}
