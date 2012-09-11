@@ -2,6 +2,36 @@
 
 \subsection{Bibliothèques testées}
 
+\subsubsection{Reconstruction 3D}
+
+La reconstruction 3D étant un domaine de recherche répandu, un grand nombre d'algorithmes existe déjà. J'ai donc tenté de trouver une librairie permettant de reconstruire un nuage de points à partir d'une liste d'images.
+On peut trouver plusieurs algorithmes sur OpenSLAM.org :
+\begin{itemize}
+  \item ScaViSLAM
+  \item RobotVision
+\end{itemize}
+
+Cependant les travaux présents sur OpenSLAM.org sont généralement conçus pour des capteurs de type laser.
+
+\subsubsection{Fusion de cartes}
+
+Afin de fusionner des cartes j'ai testé l'algorithme ICP sur deux nuages de points ayant un nombre de points plus ou moins important en commun.
+
+\begin{table}[h]
+  \begin{center}
+    \begin{tabular}{|c|c|c|c|c|c|}
+    \hline
+    Nb1 & Nb2 & commun & ratio & scale & succes \\
+    \hline
+    1200 & 1500 & 800 & 60\% & 1.0 & OK \\
+    1200 & 1500 & 800 & 60\% & 0.6 & Error \\
+    \hline
+    \end{tabular}
+  \caption{Réussite de l'ICP}
+  \end{center}
+\end{table}
+
+
 \subsection{Travaux restants}
 
 \subsubsection{Points importants}
@@ -14,4 +44,4 @@
 
 \subsubsection{Grant}
 
-Mettre un Grant
+Mettre un Grant ici \dag
