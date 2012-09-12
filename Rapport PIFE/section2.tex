@@ -1,4 +1,5 @@
 \section{Vision}
+\label{sec:vision}
 
 Cette partie sera une consacrée à la partie théorique de la reconstruction 3D.
 Dans un premier temps nous verrons le cas de la reconstruction à partir d'une paire de caméras classiques.
@@ -52,31 +53,29 @@ Elle est définit pour toutes paires de points $i$ dans les images 1 et 2, par l
 Connaissant la matrice intrinsèque de la caméra (voir \ref{subsub:calibration}), nous pouvons éliminer les facteurs induit par les focales, afin de normaliser la matrice fondamentale.
 On obtiendra la matrice essentielle $\mathbf{E}$ :
 \begin{equation}
-\mathbf{E} = \mathbf{K}_1^{T} . \mathbf{F} . \mathbf{K}_2
+\mathbf{E} = \mathbf{K}_1^{\top} . \mathbf{F} . \mathbf{K}_2
 \end{equation}
 Si les deux images sont acquis par la même caméra, on aura $\mathbf{K}_1 = \mathbf{K}_2$.
-
 Nous pouvons obtenir la matrice essentielle directement depuis la liste de points, en normalisant les points eux-même.
 \begin{equation}
-(\mathbf{m}_{i,1}.\mathbf{K}_1^{-T}).\mathbf{E}.(\mathbf{K}_2^{-1}.\mathbf{m}_{i,2}) = 0
+(\mathbf{m}_{i,1}.\mathbf{K}_1^{-\top}).\mathbf{E}.(\mathbf{K}_2^{-1}.\mathbf{m}_{i,2}) = 0
 \label{eq:essentielle}
 \end{equation}
 
 
-Afin d'obtenir les matrices $\mathbf{R}$ et $\mathbf{t}$, nous devons utiliser une autre formulation de $\mathbf{E}$ :
+Afin d'obtenir les matrices $\mathbf{R}$ et $\mathbf{t}$, nous devons utiliser une autre formulation de la matrice essentielle $\mathbf{E}$ :
 \begin{equation}
-\mathbf{E} = \mathbf{R} . [\mathbf{t}]_x
+\mathbf{E} = \mathbf{R} . [\mathbf{t}]_\times
 \end{equation}
-Avec $[\mathbf{t}]_x$ la matrice anti-symétrique\footnote{Si $\mathbf{t}=\begin{pmatrix}t_1\\t_2\\t_3\end{pmatrix}$, alors $[\mathbf{t}]_x=\begin{pmatrix}0&-t_3&t_2\\t_3&0&-t_1\\-t_2&t_1&0\end{pmatrix}$} du vecteur $\mathbf{t}$.
-
-Nous pouvons maintenant extraire $\mathbf{R}$ et $\mathbf{t}$. Pour celà nous devons décomposer la matrice essentielle :
-$$\mathbf{E}=\mathbf{U} \mathbf{\Sigma} \mathbf{V}^T$$
-Nous avons, $ \mathbf{\Sigma} = \begin{pmatrix}s&0&0\\0&s&0\\0&0&0\end{pmatrix}$, alors:
+Avec $[\mathbf{t}]_\times$ la matrice anti-symétrique\footnote{Si $\mathbf{t}=\begin{pmatrix}t_1\\t_2\\t_3\end{pmatrix}$, alors $[\mathbf{t}]_\times=\begin{pmatrix}0&-t_3&t_2\\t_3&0&-t_1\\-t_2&t_1&0\end{pmatrix}$} du vecteur $\mathbf{t}$.
+Nous pouvons maintenant extraire $\mathbf{R}$ et $\mathbf{t}$. Pour cela nous devons décomposer la matrice essentielle :
+$$\mathbf{E}=\mathbf{U} \mathbf{\Sigma} \mathbf{V}^{\top}$$
+Nous avons, $\mathbf{\Sigma} = \begin{pmatrix}s&0&0\\0&s&0\\0&0&0\end{pmatrix}$, alors:
 \begin{equation}
-[\mathbf{t}]_x = \mathbf{V} \mathbf{W} \mathbf{\Sigma} \mathbf{V}^T
+[\mathbf{t}]_\times = \mathbf{V} \mathbf{W} \mathbf{\Sigma} \mathbf{V}^{\top}
 \end{equation}
 \begin{equation}
-\mathbf{R} = \mathbf{U} \mathbf{W}^{-1} \mathbf{V}^T
+\mathbf{R} = \mathbf{U} \mathbf{W}^{-1} \mathbf{V}^{\top}
 \end{equation}
 Avec, $\mathbf{W}=\begin{pmatrix}0&1&0\\-1&0&0\\0&0&1\end{pmatrix}$
 
@@ -85,9 +84,9 @@ Avec, $\mathbf{W}=\begin{pmatrix}0&1&0\\-1&0&0\\0&0&1\end{pmatrix}$
 
 \subsection{Modèle unifié}
 
-Pour les caméras catadioptriques, un modèle permettant de représenter les caméeas munies d'un mirroir plan, parabolique, hyperbolique, elliptique a été mis en place.
+Pour les caméras catadioptriques, un modèle permettant de représenter les caméras munies d'un miroir plan, parabolique, hyperbolique, elliptique a été mis en place.
 
-Ce modèle unifié, appelé modèle sphérique, prends en entré un seul paramètre $\xi$ pour représenter le mirroir.
+Ce modèle unifié, appelé modèle sphérique, prends en entré un seul paramètre $\xi$ pour représenter le miroir.
 
 \fig{images/videH}{Modèle sphérique pour caméras catadioptriques}{fig:modeleunifie}
 
@@ -104,7 +103,7 @@ Avec $\rho = ||X|| = \sqrt{X^2+Y^2+Z^2}$.
 
 On projete enfin le point $X_m$ sur le plan de $Z = 1 - \xi$ :
 \begin{equation}
-x = \begin{bmatrix}  \frac{X}{Z+\xi \rho} && \frac{Y}{Z +\xi \rho} && 1 \end{bmatrix}^{T}
+x = \begin{bmatrix}  \frac{X}{Z+\xi \rho} && \frac{Y}{Z +\xi \rho} && 1 \end{bmatrix}^{\top}
 \end{equation}
 
 Pour finir on applique la transformée homographique due aux paramètres intrinsèques de la caméra, pour obtenir le point $m$ dans l'image.
@@ -117,7 +116,7 @@ m= K x
 A partir du point $m$ dans l'image on souhaite avoir le point 3D dans le repère monde correspondant.
 
 \begin{equation}
-x = \begin{bmatrix} x && y && 1 \end{bmatrix}^{T} = K^{-1} m
+x = \begin{bmatrix} x && y && 1 \end{bmatrix}^{\top} = K^{-1} m
 \end{equation}
 
 On inverse la fonction de projection pour obtenir les coordonnées du point du la shpère :
@@ -125,7 +124,7 @@ On inverse la fonction de projection pour obtenir les coordonnées du point du l
 X_m = (\nu^{-1} + \xi) \bar{x}
 \end{equation}
 \begin{equation}
-\bar{x} = \begin{bmatrix}x && y && \frac{1}{1+\xi \mu} \end{bmatrix}^{T}
+\bar{x} = \begin{bmatrix}x && y && \frac{1}{1+\xi \mu} \end{bmatrix}^{\top}
 \end{equation}
 Avec :
 \begin{equation}
@@ -137,7 +136,57 @@ Avec :
  \right.
 \end{equation}
 
+\subsubsection{Déplacement}
 
+Dans sa thèse \cite{Puig11PhD}, \citeauthor{Puig11PhD} expose une méthode pour calculer le déplacement de la caméra entre deux prises d'images omnidirectionnelles.
+Ceci est donc juste un rappel d'une méthode existante, analogue à la version perspective.
+\begin{equation}
+\widehat{[q]}_\times \text{P}_{cata} \hat{Q} = 0
+\end{equation}
+Que nous pouvons mettre sous forme d'un système d'équations $6n\times60$:
+\begin{equation}
+\left( \hat{Q}^{\top} \otimes \widehat{[q]}_\times \right) \text{P}_{cata}  = 0_6
+\end{equation}
+($\otimes$ est le produit de Kronecker)
+
+On peut résoudre ce système d'équation par \warning{moindre carré} en utilisant la SVD\footnote{Singular Value Decomposition}.
+Note that the minimum number of required corre-
+spondences is 20: a 3$\times$3 skew symmetric matrix has rank 2, its lifted counterpart rank
+3. Therefore, each correspondence provides only 3 independent linear constraints.
+
+\begin{equation}
+c_x = \frac{M_{46}}{M_{66}}
+\end{equation}
+\begin{equation}
+c_y = \frac{M_{56}}{M_{66}}
+\end{equation}
+\begin{equation}
+\xi = \sqrt{\frac{\frac{M_{16}}{M_{66}}-c_x^2}{-2\left( \frac{M_{44}}{M_{66}}-c_x^2 \right)}}
+\end{equation}
+\begin{equation}
+f = \sqrt{2\left(2\xi^4 + \left(1-\xi^2\right)^2\right)\left(\frac{M44}{M66}-c_x^2\right)}
+\end{equation}
+
+\begin{equation}
+\text{T}_{cata} = R_{6\times6} \left(I_6 T_{6\times4} \right) \sim (\hat{K}X_\xi )^{-1} \text{P}_{cata}
+\end{equation}
+
+Nous devons maintenant extraire la matrice de rotation :
+\begin{equation}
+\hat{R} = \hat{R}_z(\gamma).\hat{R}_y(\beta).\hat{R}_x(\alpha)
+\end{equation}
+$\hat{R}_{est}$ est la matrice $6\times6$ la plus a gauche de $\text{P}_{cata}$.
+\begin{equation}
+\gamma = \tan^{-1}\left(\frac{\hat{R}_{est,51}}{\hat{R}_{est,41}}\right)
+\end{equation}
+$\hat{R}_{est} = \hat{R}_z^{-1}(\gamma).\hat{R}_{est}$
+\begin{equation}
+\beta = \tan^{-1}\left(\frac{-\hat{R}_{est,52}}{\hat{R}_{est,22}}\right)
+\end{equation}
+$\hat{R}_{est} = \hat{R}_y^{-1}(\beta).\hat{R}_{est}$
+\begin{equation}
+\alpha = \tan^{-1}\left(\frac{\hat{R}_{est,42}}{\hat{R}_{est,22}}\right)
+\end{equation}
 
 \subsection{Vision Hybride}
 Puig \cite{Puig08}
@@ -146,10 +195,10 @@ Pour les points de l'image catadioptrique, nous devons utilisé les coordonnées
 $$\hat{\mathbf{q}}=\begin{pmatrix}q_1^2+q_2^2\\q_1q_2\\q_2q_3\\q_3^2\end{pmatrix}$$
 Nous avons :
 \begin{equation}
-\hat{\mathbf{q}}_c^T\mathbf{F}_{cp}\mathbf{q}_p=0
+\hat{\mathbf{q}}_c^{\top}\mathbf{F}_{cp}\mathbf{q}_p=0
 \end{equation}
 On défini $\mathbf{B}_c$ ($3\times4$ matrice) pour représenter la matrice de projection pour la caméra catadioptrique.
 La matrice essentielle ne peut pas \^etre calculé comme dans la section~\ref{sub:reconstruction} car $\mathbf{B}_c$ n'est pas une matrice de rotation :
 \begin{equation}
-\mathbf{E} \neq \mathbf{B}_c^T \mathbf{F}_{cp} \mathbf{K}_p
+\mathbf{E} \neq \mathbf{B}_c^{\top} \mathbf{F}_{cp} \mathbf{K}_p
 \end{equation}

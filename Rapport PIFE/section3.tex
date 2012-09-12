@@ -1,22 +1,21 @@
 \section{Stratégie}
 
-
 \subsection{Carte locale}
 
-Chaque robot aura une carte locale associée aux déplacements réalisés pendant la séquence de cartographie.
-Sur cette période, les robots sont dirigés manuellement afin de parcourir les lieux qui seviront lors de la phase de navigation autonôme.
+Afin de pouvoir se déplacer en autonomie, chaque robot aura une carte locale associée aux déplacements réalisés pendant la séquence de cartographie.
+Sur cette période, les robots sont dirigés manuellement afin de parcourir les lieux qui serviront lors de la phase de navigation autonome.
 
 Les cartes locales sont constituées des éléments repérables et calculables par le robots.
 On retrouve donc :
 \begin{itemize}
-\item Les points d'intérêts dans l'image ainsi que leurs descripteur associés
+\item Les points d'intérêts dans l'image ainsi que leurs descripteurs associés
 \item Les points 3D reconstruits
 \item La trajectoire du robot calculée
 \end{itemize}
 
 Les points d'intérêts sont extraits à l'aide de la méthode de Harris.
-Un descripteur du point lui est associé, on utilisera dans un premier temps les descripteurs SIFT\footnote{Scale Invariant Feature T}.
-D'autres type d'imagettes seront testé pour comparer les performances, comme les informations mutelle, MSER, Ogre, Surf et si aucun n'est très performant pour le cas hybride, nous mettrons au point un niveau type de descripteur.
+Un descripteur du point lui est associé, on utilisera dans un premier temps les descripteurs SIFT.
+D'autres type  seront testé pour comparer les performances, comme les informations mutuelle, MSER, Ogre, Surf et si aucun n'est très performant pour le cas hybride, nous mettrons au point un niveau type de descripteur.
 
 
 \subsection{Carte globale}
@@ -31,8 +30,10 @@ La stratégie utilisée pour la fusion est la suivante :
 Plusieurs solutions pourront être retournés.
 \item Afin de rejeté les mauvaises solutions, on testera si les points 3D mis en correspondances sont réellement les même en comparant leurs descripteurs respectifs.
 \item si le nombre de points 3D en correspondance restant est suffisant, la fusion de carte peut avoir lieux.
-On applique la tranformation (rotation, translation, echelle) à la deuxième carte et on ajoute tous les points à la première.
+On applique la transformation (rotation, translation, échelle) à la deuxième carte et on ajoute tous les points à la première.
 \end{enumerate}
+
+Dans un second temps on pourra envisagé la fusion de carte \emph{en ligne} lorsque deux robots sont assez proches pour communiquer et qu'ils trouvent un ou plusieurs endroits communs dans leurs cartes locales.
 
 \subsection{Navigation}
 
