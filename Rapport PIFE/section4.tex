@@ -13,6 +13,8 @@ On peut trouver plusieurs algorithmes sur OpenSLAM.org :
 
 Cependant les travaux présents sur OpenSLAM.org sont généralement conçus pour des capteurs de type laser.
 
+Il faut également que je regarde ce que propose la librairie MRPT\footnote{Mobile Robot Programming Toolkit}.
+
 \subsubsection{Fusion de cartes}
 
 Afin de fusionner des cartes j'ai testé l'algorithme ICP sur deux nuages de points ayant un nombre de points plus ou moins important en commun.
@@ -60,19 +62,21 @@ Les images~\ref{fig:create} et~\ref{fig:build} permettent de voir le résultat d
 \subsection{Travaux restants}
 
 \subsubsection{Points importants}
+
+Un certain nombre de points important reste cependant à explorer :
 \begin{enumerate}
 \item Vision : Afin de détecter les points en correspondance entre des images de types différents, nous avons besoin de tester d'autre descripteurs que SIFT, (SURF, MI, MSER, Ogre, \dots)
 \item Ajustement de faisceaux : Dans le cas d'images provenant de caméras différentes et en prenant également en compte la dérive du facteur d'échelle
-\item Temps réel : Etablir une communication en temps réel entre les robots pour la fusion de carte (voir les travaux de R. \textsc{Aragues}~\cite{Aragues11PhD})
+\item Temps réel : Établir une communication en temps réel entre les robots pour la fusion de carte (voir les travaux de R. \textsc{Aragues}~\cite{Aragues11PhD})
 \item SoViN : Implémenter les fonctions manquantes dans SoViN puis le lier à ma bibliothèque 
 \end{enumerate}
 
-Pour les deux années et demi qu'il reste pour ce projet, je dois mettre en place :
+Ce projet étant étalé sur trois années, il reste donc deux ans et demi pour abordé en temps voulu les points précédents, je dois notamment mettre en place les idées suivantes :
 \begin{enumerate}
 \item Une surveillance dans un environnement dynamique et inconnu
 \item Améliorer la localisation à l'aide de cartes topologiques ainsi qu'en utilisant les informations de position relatives entre les robots
 \item Générer le suivi d'une cible à l'aide de plusieurs robots
-\item Générer des déplacement en formation avec ou sans \emph{leader}
+\item Générer des déplacements en formation avec ou sans \emph{leader}
 \end{enumerate}
 
 \subsubsection{Grant}

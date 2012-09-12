@@ -18,7 +18,8 @@ La projection d'un point $\mathbf{X}$ dans l'espace donne le point $\mathbf{m}$ 
 s \underbrace{\begin{pmatrix}u \\ v \\ 1\end{pmatrix}}_{\mathbf{m}} = 
 \underbrace{\begin{pmatrix}f_u && 0 && u_0 \\ 0 && f_v && v_0 \\ 0 && 0 && 1\end{pmatrix}}_{\mathbf{K}} . 
 \underbrace{\begin{pmatrix}r11 && r12 && r13 && t1 \\ r21 && r22 && r23 && t2 \\ r31 && r32 && r33 && t3\end{pmatrix}}_{[\mathbf{R~t}]} . 
-\underbrace{\begin{pmatrix}X \\ Y \\ Z \\ 1\end{pmatrix}}_{\mathbf{X}} 
+\underbrace{\begin{pmatrix}X \\ Y \\ Z \\ 1\end{pmatrix}}_{\mathbf{X}}
+\label{eq:projection}
 \end{equation}
 
 \begin{equation}
@@ -36,6 +37,13 @@ $\mathbf{P} = [ \mathbf{R} ~ \mathbf{t} ]$
 \subsubsection{Calibration}
 \label{subsub:calibration}
 La calibration d'une caméra perspective est réalisé à partir d'une mire \cite{??}.
+
+L'opération de calibration de caméra revient à modéliser le processus de formation des images, c'est-à-dire trouver la relation entre les coordonnées spatiales d'un point de l'espace et le point associé dans l'image prise par la caméra.
+
+Dans le cas d'une caméra perspective, le modèle de projection est linéaire, comme présenté dans l'équation~\ref{eq:projection}.
+La matrice de projection ou matrice de paramètres extrinsèques $\mathbf{P}$, dépends de la position de la caméra et non du capteur lui-même.
+La calibration consiste donc à estimer la matrice des paramètres intrinsèques ainsi que les éventuelles distorsions de l'image.
+
 
 \subsubsection{Méthode}
 
