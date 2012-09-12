@@ -94,13 +94,14 @@ Les lignes sont particulièrement présentes dans les environnements intérieurs
 Notre robots devant naviguer principalement en extérieur, ce type d'amère est incompatible avec notre besoin.
 Il reste donc les points, qui sont naturellement présent dans toutes les images nettes d'un environnement.
 Le défi sera donc de caractériser les différents points de l'image afin de pouvoir les comparer et les appairer.
-Plusieurs outils sont à notre disposition, ils s'agit de descripteurs.
+Plusieurs outils sont à notre disposition, il s'agit de descripteurs.
 On va caractériser une imagette d'une taille fixe autour du point, puis enregistrer l'information en même temps que la position du point dans l'image.
 
 %\end{minipage}
 %\end{tabular}
+\warning{Répétition}
 
-Les principales amères utilisées sont :
+Dans le cas des images omnidirectionnelles, compte tenu de la déformation des images, les seules amères pouvant être utilisées sont :
 \begin{itemize}
 \item Les points : les appariements se font avec principalement SIFT
 \item Les droites : détection de droites verticales (droites se coupant au centre de l'image), droites parallèles (sous forme de coniques dans l'image)
@@ -108,19 +109,28 @@ Les principales amères utilisées sont :
 
 
 
-\smallfig{0.2}{images/Rituerto10.png} {[Rituerto10] Visual slam with an omnidirectional camera} {fig:rituerto}
-Utilisation du filtre de Kalman (EKF\footnote{Extended KalmanFilter}) avec une caméra omnidirectionnelle. Utilisation de SIFT pour les mises en correspondances. Il obtient de meilleurs résultats qu'avec un SLAM classic. 
-
-
-
-\smallfig{0.2}{images/Dame10.png}{[Dame10PhD] A unified direct approach for visual servoing and visual tracking using mutual information} {fig:dame}
+\smallfig{0.2}{images/Dame10.png}{[Dame10PhD] A unified direct approach for visual servoing and visual tracking using mutual information}{fig:dame}
 Dame propose un moyen de comparaison de deux imagettes plus performant que les algorithmes proposés : SSD\footnote{Sum of Squared Differences} or ZNCC\footnote{Zero-mean Normalized\\Cross Correlation}.
 Comparer MI avec SIFT, SURF et autres descripteurs lors des cas de vision hybride perspective/catadioptrique.  
 
+\subsubsection{Trajectoire}
+
+En reconstruisant le modèle 3D de l’environnement, on obtient également le chemin parcouru lors de la prise des images.
+Ce résultat est moins précis qu'avec un GPS car la fréquence d'acquisition des images est généralement plus élevée.
+
+\smallfig{0.2}{images/Rituerto10.png} {[Rituerto10] Visual slam with an omnidirectional camera} {fig:rituerto}
+Ici la courbe noire est la trajectoire réelle, la bleue est obtenue par l'odométrie, la rouge par la vision omnidirectionnelle. Utilisation du filtre de Kalman (EKF\footnote{Extended KalmanFilter}) avec une caméra omnidirectionnelle. Utilisation de SIFT pour les mises en correspondances. Il obtient de meilleurs résultats qu'avec un SLAM classic. 
+
+
 \subsection{Fusion de cartes}
 
+Chacun des robots va créer sa propre carte basée sur les informations visuelles acquises lors de son déplacement.
+Lorsque qu'un autre robot va croiser la trajectoire parcourue par le premier, il y aura des informations identiques dans les deux cartes, il serait donc important de fusionner les informations dans une seule carte plus globale.
+
+On retrouve un grand nombre de travaux pour la robotique mobile dans le cas de robots embarquant un capteur de type laser.
+
 \smallfig{0.2}{images/Konolige03.png}{[Konolige03] Map Merging for Distributed Robot Navigation}{fig:konolige}
-Basé sur une méthode de vraisemblance (likehood), Konolige permet de re-situer une sous-partie de carte au sein d'une carte globale ayant un a-priori sur la position.\\
+Basé sur une méthode de vraisemblance (\textit{likehood}), Konolige permet de re-situer une sous-partie de carte au sein d'une carte globale ayant un a-priori sur la position.\\
 $\Rightarrow$ Utilisation de carte dense telle qu'une cartographie laser.
 
 
@@ -141,36 +151,51 @@ Un pré-ajustement est effectué avec une fenêtre glissante (quelques images), 
 
 \smallfig{0.2}{images/Korrapati11.png}{[Korrapati11] Efficient Topological Mapping with Image Sequence Partitionning}{fig:korrapati}  
 Pour les expériences avec une caméra omnidirectionnelle, un système de gestion des amères à été mis en place afin de pouvoir retrouver rapidement les fermetures de boucle.\\
-Ce système pourra être utilisé dans le cas de notre étude (voir SOVIN).
+Ce système pourra être utilisé dans le cas de notre étude (voir SoViN, \ref{subsub:sovin}).
 
 
 
 \subsection{Multi-robots}
 
+Comme annoncé précédemment, notre étude portera sur une flotte de robots mobiles.
+Il y a donc un aspect supplémentaire à prendre en compte, la coopération.
+
 \smallfig{0.2}{images/Hukui10.png}{[Hukui10] Mutual Localization of Sensor Node Robots}{fig:hukui}  
-Utilisation des connaissances sur les positions relatives des robots afin d'améliorer la qualité de la localisation globale.\\
-$\Rightarrow$ Comment localiser les robots entre eux ?
+Le papier \cite{Hukui10} se base sur l'utilisation des connaissances sur les positions relatives des robots afin d'améliorer la qualité de la localisation globale.
+Si un robot connaît la position d'un autre robot par rapport à sa position courante, il peut utiliser les informations acquises par le second pour alimenter sa base de données.
+
+Quelques points importants restent à éclaircir comme comment localiser les robots entre eux ?
+Effectivement, nous devons faire la différence entre un VipaLab et une voiture classique sus une image omnidirectionnelle, c'est donc un problème de détection puis de suivi d'objets.
+L'autre point est la précision de position (et d'orientation) relative des robots obtenue par la vision.
+
 
 
 \smallfig{0.2}{images/Howard06.png}{[Howard06] Multi-robot Simultaneous Localiszation and Mapping using Particule Filters}{fig:howard}  
 
 
 
-\smallfig{0.2}{images/Aragues11.png}{[Aragues11PhD] Distributed Algorithms on Robotic Nectwoks for Coordination in Perception Tasks}{fig:aragues}  
+\smallfig{0.4}{images/Aragues11.png}{[Aragues11PhD] Distributed Algorithms on Robotic Nectwoks for Coordination in Perception Tasks}{fig:aragues}  
 Map merging with multi robots, one camera type. Use SIFT/SURF and 3D points.\\
 $\Rightarrow$ Improve with mutli-camera sensors. 
 
 
 
 \subsection{SoViN}
+\label{subsub:sovin}
 
+       
+La librairie \emph{SoViN}\footnote{Software for Visual Navigation} développée par J. \textsc{Courbon}\footnote{En collaboration avec L. \textsc{Lequièvre}, Y. \textsc{Mezouar} et E. \textsc{Royer}} permet une gestion optimisée des bases de données dans le cadre de la vision pour robot mobile.
+L'architecture proposée permet d'enregistrer simultanément une image, les points 2D extraits avec leur descripteurs respectifs, les points 3D reconstruits ainsi que la position du robot si elle est connue.
 
-\smallfig{0.2}{images/sovin.png}{Interface du logiciel \emph{Sovin} par J. Courbon}{fig:SOVIN}       
-La librairie \emph{Sovin} développée par J. Courbon permet une gestion optimisée des points 2D/3D mais également des images/descripteurs.\\
 Pour pouvoir l'utiliser dans le cadre de ma thèse il faut donc ajouter/revoir les blocks suivants :
 \begin{itemize}
-\item Vision hybride
-\item Fermeture de boucles
-\item Information mutuelle
-\item Multi-robots
+\item Multi-robots, gérer l'utilisation de plusieurs sources d'images
+\item Carte globale, résultat de la fusion de cartes locales
+\item Fermeture de boucles, pour détecter des redondances d'informations entre robots
+\item Information mutuelle, comme nouveau type de descripteur
 \end{itemize}
+
+\smallfig{0.7}{images/sovin.png}{Interface du logiciel \emph{SoViN} par J. \textsc{Courbon}}{fig:SOVIN}
+
+Une interface graphique est proposée pour construire et visualiser la base de donnée.
+Le fonctionnement détaillé est visible dans \cite{Lequievre08}, qui mentionne \warning{A LIRE}.

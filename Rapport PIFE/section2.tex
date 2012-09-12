@@ -1,14 +1,18 @@
 \section{Vision}
 
-Cette partie sera une partie théorique concernant la reconstruction 3D. Dans un premier temps nous verrons le cas de la reconstruction à partir d'une paire de caméras classiques. Nous verrons ensuite le modèle unifié pour les caméras catadioptrique. Nous verrons au final la vision hybride.
+Cette partie sera une consacrée à la partie théorique de la reconstruction 3D.
+Dans un premier temps nous verrons le cas de la reconstruction à partir d'une paire de caméras classiques.
+Nous verrons ensuite le modèle unifié pour les caméras catadioptrique.
+Nous aborderons au final la vision hybride.
 
 \subsection{Reconstruction 3D}
 \label{sub:reconstruction}
 
-La reconstruction 3D à partir de deux vues perspective a été très bien formalisé dans le livre de Hartley et Zisserman \cite{Hartley03Book}.
+La reconstruction 3D à partir de deux vues perspectives a été très bien formalisé dans le livre de \citeauthor{Hartley03Book} \cite{Hartley03Book}.
+En prenant deux vues d'une même caméra perspective, nous devons calculer le déplacement entre les lieux de prise de vue.
+Celui ci est déterminé par une matrice de projection $\mathbf{P}$ qui se compose de deux matrices $\mathbf{R}$ et $\mathbf{t}$, respectivement la matrice de rotation et la matrice de translation.
 
-En prenant deux vues d'une même caméra perspective, nous devons calculer le déplacement $\mathbf{R}$ et $\mathbf{t}$ entre les lieux de prise de vue.
-
+La projection d'un point $\mathbf{X}$ dans l'espace donne le point $\mathbf{m}$ dans le plan image :
 \begin{equation}
 s \underbrace{\begin{pmatrix}u \\ v \\ 1\end{pmatrix}}_{\mathbf{m}} = 
 \underbrace{\begin{pmatrix}f_u && 0 && u_0 \\ 0 && f_v && v_0 \\ 0 && 0 && 1\end{pmatrix}}_{\mathbf{K}} . 
@@ -28,19 +32,38 @@ $\mathbf{P} = [ \mathbf{R} ~ \mathbf{t} ]$
 \item $s$ est un facteur réel quelconque ($s \in \Re$)
 \end{itemize}
 
-A partir des correspondances de points dans les deux images, nous pouvons calculer la matrice fondamentale $\mathbf{F}$ définie par (eq~\ref{eq:fondamentale})
+\subsubsection{Calibration}
+\label{subsub:calibration}
+La calibration d'une caméra perspective est réalisé à partir d'une mire \cite{??}.
+
+\subsubsection{Méthode}
+
+Comme nous avons pu voir précédemment, les seuls informations que l'on va utiliser dans les images sont des points.
+Pour donner un sens à ces listes de points, ils seront appairés.
+C'est à dire que chaque point dans la première image devra avoir un point correspondant dans la seconde.
+
+On va pouvoir calculer un matrice regroupant toutes les informations possible de tiré de cette configuration.
+Cette matrice ce nommera la matrice fondamentale, notée $\mathbf{F}$.
+Elle est définit pour toutes paires de points $i$ dans les images 1 et 2, par la suite l'indice $i$ sera omis.
 \begin{equation}
-\mathbf{m}_1.\mathbf{F}.\mathbf{m}_2 = 0
-\
+\mathbf{m}_{i,1}.\mathbf{F}.\mathbf{m}_{i,2} = 0
 \label{eq:fondamentale}
 \end{equation}
-
-A partir de cette matrice nous pouvons avoir la matrice essentielle $\mathbf{E}$
+Connaissant la matrice intrinsèque de la caméra (voir \ref{subsub:calibration}), nous pouvons éliminer les facteurs induit par les focales, afin de normaliser la matrice fondamentale.
+On obtiendra la matrice essentielle $\mathbf{E}$ :
 \begin{equation}
 \mathbf{E} = \mathbf{K}_1^{T} . \mathbf{F} . \mathbf{K}_2
 \end{equation}
+Si les deux images sont acquis par la même caméra, on aura $\mathbf{K}_1 = \mathbf{K}_2$.
 
-Une autre formulation de $\mathbf{E}$ est :
+Nous pouvons obtenir la matrice essentielle directement depuis la liste de points, en normalisant les points eux-même.
+\begin{equation}
+(\mathbf{m}_{i,1}.\mathbf{K}_1^{-T}).\mathbf{E}.(\mathbf{K}_2^{-1}.\mathbf{m}_{i,2}) = 0
+\label{eq:essentielle}
+\end{equation}
+
+
+Afin d'obtenir les matrices $\mathbf{R}$ et $\mathbf{t}$, nous devons utiliser une autre formulation de $\mathbf{E}$ :
 \begin{equation}
 \mathbf{E} = \mathbf{R} . [\mathbf{t}]_x
 \end{equation}
