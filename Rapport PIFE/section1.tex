@@ -14,7 +14,7 @@ Une fois un nuage de points obtenu, nous pouvons affiner ce modèle en effectuan
 
 On retrouve également les techniques de reconstruction avec deux caméras dans le livre \cite{HoraudBook}, \citetitle{HoraudBook} de \citeauthor{HoraudBook}.
 
-Cependant une dérive apparaît ...
+\warning{Cependant une dérive apparaît ...}
 
 
 \subsubsection{Vision mixte}
@@ -110,7 +110,7 @@ Dans le cas des images omnidirectionnelles, compte tenu de la déformation des i
 
 
 \smallfig{0.2}{images/Dame10.png}{[Dame10PhD] A unified direct approach for visual servoing and visual tracking using mutual information}{fig:dame}
-Dame propose un moyen de comparaison de deux imagettes plus performant que les algorithmes proposés : SSD\footnote{Sum of Squared Differences} or ZNCC\footnote{Zero-mean Normalized\\Cross Correlation}.
+Dame \cite{Dame10PhD} propose un moyen de comparaison de deux imagettes plus performant que les algorithmes proposés : SSD\footnote{Sum of Squared Differences} or ZNCC\footnote{Zero-mean Normalized\\Cross Correlation}.
 Comparer MI avec SIFT, SURF et autres descripteurs lors des cas de vision hybride perspective/catadioptrique.  
 
 \subsubsection{Trajectoire}
@@ -118,8 +118,8 @@ Comparer MI avec SIFT, SURF et autres descripteurs lors des cas de vision hybrid
 En reconstruisant le modèle 3D de l’environnement, on obtient également le chemin parcouru lors de la prise des images.
 Ce résultat est moins précis qu'avec un GPS car la fréquence d'acquisition des images est généralement plus élevée.
 
-\smallfig{0.2}{images/Rituerto10.png} {[Rituerto10] Visual slam with an omnidirectional camera} {fig:rituerto}
-Ici la courbe noire est la trajectoire réelle, la bleue est obtenue par l'odométrie, la rouge par la vision omnidirectionnelle. Utilisation du filtre de Kalman (EKF\footnote{Extended KalmanFilter}) avec une caméra omnidirectionnelle. Utilisation de SIFT pour les mises en correspondances. Il obtient de meilleurs résultats qu'avec un SLAM classic. 
+\smallfig{0.2}{images/Rituerto10.png} {Ici la courbe noire est la trajectoire réelle, la bleue est obtenue par l'odométrie, la rouge par la vision omnidirectionnelle} {fig:rituerto}
+Dans le papier \cite{Rituerto10}, l'auteur propose l'utilisation du filtre de Kalman (EKF\footnote{Extended KalmanFilter}) avec une caméra omnidirectionnelle. On remarque également l'utilisation de SIFT pour les mises en correspondances dans le cas d'images omnidirectionnelles. Ses résultats montrent qu'il obtient une meilleur précision qu'avec un SLAM classique. 
 
 
 \subsection{Fusion de cartes}
@@ -130,27 +130,27 @@ Lorsque qu'un autre robot va croiser la trajectoire parcourue par le premier, il
 On retrouve un grand nombre de travaux pour la robotique mobile dans le cas de robots embarquant un capteur de type laser.
 
 \smallfig{0.2}{images/Konolige03.png}{[Konolige03] Map Merging for Distributed Robot Navigation}{fig:konolige}
-Basé sur une méthode de vraisemblance (\textit{likehood}), Konolige permet de re-situer une sous-partie de carte au sein d'une carte globale ayant un a-priori sur la position.\\
+Basé sur une méthode de vraisemblance (\textit{likehood}), Konolige \cite{Konolige03} permet de re-situer une sous-partie de carte au sein d'une carte globale ayant un a-priori sur la position.\\
 $\Rightarrow$ Utilisation de carte dense telle qu'une cartographie laser.
 
 
 
 
-\smallfig{0.2}{images/Gutmann99.png}{[Gutman99] Incremental Mapping of Large Cycle Environments}{fig:gutmann}
-Ce papier parle de la recherche de recouvrement de scan dans une démarche d'exploration d'environnement. 
+\smallfig{0.2}{images/Gutmann99.png}{[Gutmann99] Incremental Mapping of Large Cycle Environments}{fig:gutmann}
+Le papier \cite{Gutmann99} parle de la recherche de recouvrement de scan dans une démarche d'exploration d'environnement. 
 Il utilise des parties de la carte globale afin de voir si le motif se retrouve autre part dans la carte pour effectuer une fermeture de boucle.\\
 $\Rightarrow$ Utilisation de carte dense telle qu'une cartographie laser.
 
 
 
 \smallfig{0.2}{images/Strasdat10.png}{[Strasdat10] Scale Drift-Aware Large Scale Monocular SLAM}{fig:strasdat}   
-Ajustement de faisceaux pour un environnement extérieur large.\\
+Un des papiers les plus intéressant en vision monoculaire est \cite{Strasdat10}, qui, à l'aide d'une caméra perspective reconstruit un batiment en utilisant un ajustement de faisceaux qui corrige la dérive du facteur d'échelle.
 Un pré-ajustement est effectué avec une fenêtre glissante (quelques images), puis une fois la fermeture de boucle détectée, un ajustement global sur 7 degrés de liberté (rotation, translation échelle) est effectué. 
 
 
 
 \smallfig{0.2}{images/Korrapati11.png}{[Korrapati11] Efficient Topological Mapping with Image Sequence Partitionning}{fig:korrapati}  
-Pour les expériences avec une caméra omnidirectionnelle, un système de gestion des amères à été mis en place afin de pouvoir retrouver rapidement les fermetures de boucle.\\
+Pour les expériences avec une caméra omnidirectionnelle \cite{Korrapati11}, un système de gestion des amères à été mis en place afin de pouvoir retrouver rapidement les fermetures de boucle.\\
 Ce système pourra être utilisé dans le cas de notre étude (voir SoViN, \ref{subsub:sovin}).
 
 
@@ -171,10 +171,11 @@ L'autre point est la précision de position (et d'orientation) relative des robo
 
 
 \smallfig{0.2}{images/Howard06.png}{[Howard06] Multi-robot Simultaneous Localiszation and Mapping using Particule Filters}{fig:howard}  
-
+\warning{J'ai pas bien compris} le papier \cite{Howard06}
 
 
 \smallfig{0.4}{images/Aragues11.png}{[Aragues11PhD] Distributed Algorithms on Robotic Nectwoks for Coordination in Perception Tasks}{fig:aragues}  
+La thèse de \citeauthor{Aragues11PhD} \cite{Aragues11PhD} montre comment mettre en place un système efficace de communication inter-robots dans le cadre de fusion de cartes.
 Map merging with multi robots, one camera type. Use SIFT/SURF and 3D points.\\
 $\Rightarrow$ Improve with mutli-camera sensors. 
 
