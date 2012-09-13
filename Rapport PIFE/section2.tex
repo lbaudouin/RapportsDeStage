@@ -147,10 +147,14 @@ Avec :
  \right.
 \end{equation}
 
-\subsubsection*{Déplacement}
+\subsubsection{Déplacement}
 
-Dans sa thèse \cite{Puig11PhD}, \citeauthor{Puig11PhD} expose une méthode pour calculer le déplacement de la caméra entre deux prises d'images omnidirectionnelles.
+Dans sa thèse \cite{Puig11PhD}, \citeauthor{Puig11PhD} expose la partie mathématique pour calculer le déplacement de la caméra entre deux prises d'images omnidirectionnelles.
 Ceci est donc juste un rappel d'une méthode existante, analogue à la version perspective.
+On notera avec un accent circonflexe les vecteurs ou matrice qui seront \emph{liftés}.
+Soit $q=\begin{pmatrix}q_1&q_2&q_3&q_4\end{pmatrix}^\top$, on aura $\hat{q} = \begin{pmatrix}q_1^2&q_1q_2&q_2^2&q_1q_3&q_2q_3&q_3^2\end{pmatrix}^\top$
+
+On définit ensuite une relation régissant les points :
 \begin{equation}
 \widehat{[q]}_\times \text{P}_{cata} \hat{Q} = 0
 \end{equation}
@@ -164,24 +168,26 @@ On peut résoudre ce système d'équation par la méthode des moindres carrés e
 On remarque que le rang d'une matrice symétrique $3\times3$ est 2, et que sa version \emph{liftée} est de rang 3.
 Il faudra donc avoir au minimum 20 points car ils n'apportent que 3 équations indépendantes par paires.
 
+%\begin{equation}
+%c_x = \frac{M_{46}}{M_{66}}
+%\end{equation}
+%\begin{equation}
+%c_y = \frac{M_{56}}{M_{66}}
+%\end{equation}
+%\begin{equation}
+%\xi = \sqrt{\frac{\frac{M_{16}}{M_{66}}-c_x^2}{-2\left( \frac{M_{44}}{M_{66}}-c_x^2 \right)}}
+%\end{equation}
+%\begin{equation}
+%f = \sqrt{2\left(2\xi^4 + \left(1-\xi^2\right)^2\right)\left(\frac{M44}{M66}-c_x^2\right)}
+%\end{equation}
+
+On définit une matrice de transformation $\text{T}_{cata}$ (voir \cite{Puig11PhD} pour la définition de $X_\xi$) :
 \begin{equation}
-c_x = \frac{M_{46}}{M_{66}}
-\end{equation}
-\begin{equation}
-c_y = \frac{M_{56}}{M_{66}}
-\end{equation}
-\begin{equation}
-\xi = \sqrt{\frac{\frac{M_{16}}{M_{66}}-c_x^2}{-2\left( \frac{M_{44}}{M_{66}}-c_x^2 \right)}}
-\end{equation}
-\begin{equation}
-f = \sqrt{2\left(2\xi^4 + \left(1-\xi^2\right)^2\right)\left(\frac{M44}{M66}-c_x^2\right)}
+\text{T}_{cata} = R_{6\times6} \left(I_6~T_{6\times4} \right) \sim (\hat{K}X_\xi )^{-1} \text{P}_{cata}
 \end{equation}
 
-\begin{equation}
-\text{T}_{cata} = R_{6\times6} \left(I_6 T_{6\times4} \right) \sim (\hat{K}X_\xi )^{-1} \text{P}_{cata}
-\end{equation}
-
-Nous devons maintenant extraire la matrice de rotation :
+Pour obtenir $T_{6\times4}$ il suffit de multiplier $\text{T}_{cata}$ par l'inverse de $\hat{R}_{est}$.
+Il nous reste maintenant extraire la matrice de rotation :
 \begin{equation}
 \hat{R} = \hat{R}_z(\gamma).\hat{R}_y(\beta).\hat{R}_x(\alpha)
 \end{equation}
@@ -198,17 +204,17 @@ $\hat{R}_{est} = \hat{R}_y^{-1}(\beta).\hat{R}_{est}$
 \alpha = \tan^{-1}\left(\frac{\hat{R}_{est,42}}{\hat{R}_{est,22}}\right)
 \end{equation}
 
-\subsection{Vision Hybride}
-Puig \cite{Puig08}
+%\subsection{Vision Hybride}
+%Puig \cite{Puig08}
 
-Pour les points de l'image catadioptrique, nous devons utilisé les coordonnées \cite{lifted}:
-$$\hat{\mathbf{q}}=\begin{pmatrix}q_1^2+q_2^2\\q_1q_2\\q_2q_3\\q_3^2\end{pmatrix}$$
-Nous avons :
-\begin{equation}
-\hat{\mathbf{q}}_c^{\top}\mathbf{F}_{cp}\mathbf{q}_p=0
-\end{equation}
-On défini $\mathbf{B}_c$ ($3\times4$ matrice) pour représenter la matrice de projection pour la caméra catadioptrique.
-La matrice essentielle ne peut pas \^etre calculé comme dans la section~\ref{sub:reconstruction} car $\mathbf{B}_c$ n'est pas une matrice de rotation :
-\begin{equation}
-\mathbf{E} \neq \mathbf{B}_c^{\top} \mathbf{F}_{cp} \mathbf{K}_p
-\end{equation}
+%Pour les points de l'image catadioptrique, nous devons utilisé les coordonnées \cite{lifted}:
+%$$\hat{\mathbf{q}}=\begin{pmatrix}q_1^2+q_2^2\\q_1q_2\\q_2q_3\\q_3^2\end{pmatrix}$$
+%Nous avons :
+%\begin{equation}
+%\hat{\mathbf{q}}_c^{\top}\mathbf{F}_{cp}\mathbf{q}_p=0
+%\end{equation}
+%On défini $\mathbf{B}_c$ ($3\times4$ matrice) pour représenter la matrice de projection pour la caméra catadioptrique.
+%La matrice essentielle ne peut pas \^etre calculé comme dans la section~\ref{sub:reconstruction} car $\mathbf{B}_c$ n'est pas une matrice de rotation :
+%\begin{equation}
+%\mathbf{E} \neq \mathbf{B}_c^{\top} \mathbf{F}_{cp} \mathbf{K}_p
+%\end{equation}
