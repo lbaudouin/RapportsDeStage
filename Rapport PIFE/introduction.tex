@@ -1,33 +1,35 @@
 \section{Introduction}
 
 Avec les GPS, les radars de recul, les assistants de créneaux et autres gadgets, les aides à la conduite deviennent de plus en plus intelligentes.
-Devant le nombre de capteurs et de calculateurs embarqués on est en droit de se demander si le conducteur humain dans une voiture est encore nécessaire.
+Devant le nombre de capteurs et de calculateurs embarqués on est en droit de se demander si le conducteur humain est encore nécessaire dans une voiture.
 
 Il existe déjà des projets comme la voiture Google qui roule de façon autonome sur certaines routes américaines, ou les voitures Volvo qui peuvent suivre un camion sous forme de convoi de quelques véhicules.
-Mais ces voitures nécessite un nombre très important de capteurs avec une précision très importante.
-On y retrouve au choix : un GPS précis au centimètre, des télémètres lasers plans ou 3D, ainsi que des accéléromètres multi-directionnels e tout souvent complété par quelques caméras embarquées.
+Mais ces voitures nécessite un nombre très important de capteurs avec une précision poussée.
+On y retrouve au choix : un GPS précis au centimètre, des télé-mètres lasers plans ou 3D, ainsi que des accéléromètres multi-directionnels le tout souvent complété par quelques caméras embarquées.
 
-Ces capteurs ont un coût important et ne sont pas à la porté des particuliers.
-C'est pourquoi nous travaillons sur des véhicules autonome utilisant la vision, le prix d'une caméra étant largement inférieur à celui d'un télémètre laser 3D.
-
-Cependant, les algorithmes en développement ne sont pas encore adaptés à des véhicules roulant à haute vitesse.
-En attendant que le matériel et les programmes le permettent, nous allons utiliser un véhicule autonome roulant à basse vitesse, un VipaLab (voir figure~\ref{fig:vipalab}).
+Tous ces capteurs de précision ont un coût important et ne sont pas à la porté des particuliers.
+C'est pourquoi nous travaillons sur des véhicules autonomes utilisant la vision, le prix d'une caméra étant largement inférieur à celui d'un télémètre laser 3D.
 
 \smallfig{0.4}{images/VIPALAB.jpg}{Un VipaLab, véhicule sans pilote présent à l'Institut Pascal}{fig:vipalab}
 
-Le but final est d'avoir une flotte de véhicules autonomes, en libre service, dans le centre ville de Clermont-Ferrand.
-A partir d'un point initial, le robot devra être capable de planifier son trajet jusqu'à la destination souhaitée par l'utilise et de l'exécuter de manière totalement autonome mais sécurisé.
-Effectivement le robot pourra être amené à rouler dans des zones piétonnes (respect des piétons, évitement de collisions) mais également sur certaines portions de route (respect du code de la route).
+Cependant, les algorithmes en cours de développement ne sont pas encore adaptés à des véhicules roulant à haute vitesse.
+En attendant que le matériel et les programmes le permettent, nous allons utiliser un véhicule autonome roulant à basse vitesse, un VipaLab (voir figure~\ref{fig:vipalab}).
+
+
+Le but final est d'avoir une flotte de véhicules intelligents, en libre service, dans le centre ville de Clermont-Ferrand.
+A partir d'un point initial, le robot devra être capable de planifier son trajet jusqu'à la destination souhaitée par l'utilisateur et de l'exécuter de manière totalement autonome mais sécurisé.
+Effectivement le robot pourra être amené à rouler dans des zones piétonnes (respect des piétons, évitement de collisions) mais également sur certaines portions de routes (respect du code de la route).
 
 Dans un environnement aussi contraint qu'une zone piétonne, le robot doit pouvoir observer ce qu'il se passe tout autour de lui.
-L'utilisation de caméras perspectives avant et arrière ne sera pas obligatoirement suffisant dans certains cas.
+L'utilisation de caméras perspectives à l'avant et à l'arrière ne sera pas entièrement suffisant dans certains cas.
 C'est pourquoi nous avons souhaité travailler avec des caméras omnidirectionnelles (caméra catadioptrique, voir figure~\ref{fig:camcata}).
+Celles-ci permettent d'avoir un champs de vu à 360\degre.
 
 \smallfig{0.6}{images/omni.png}{Caméra omnidirectionnelle composée d'un miroir parabolique et d'une caméra affine. L'image projetée est donc obtenue sous forme de disque.}{fig:camcata}
 
 Notre flotte de véhicule ne sera pas obligatoirement homogène, on y retrouvera différents robots (véhicules) et différents capteurs (caméras).
-La différences entre les robots n'impactera pas sur notre travaille car la gestion de la trajectoire sera calculé par un programme tiers.
-La différences entre les caméras aura, quand à elle, un impacte très important sur les travaux à réalisés.
+La différences entre les robots n'impactera pas sur notre travail car la gestion de la trajectoire et de son suivi sera calculé par un programme tiers.
+La différences entre les caméras aura, quand à elle, un impacte très important sur les travaux à réalisés, car la formation des images est différente ce qui implique des informations utilisables également différentes.
 Il existe de nombreux algorithme de SLAM\footnote{Simultaneous Localisation And Mapping -- Cartographie et localisation simultanée} utilisant la vision.
 Cependant ils ne se concentrent que sur un type de caméra à la fois.
 
@@ -35,7 +37,7 @@ L'innovation demandé dans ce travail de recherche est de mettre en place de nou
 Pour parler d'une paire de caméras composée d'une caméra perspective et d'une caméra omnidirectionnelle, nous utiliserons le terme de paire hybride, d'où la notion de vision hybride.
 
 \vspace{5mm}
-Après cette introduction, nous ferrons un point sur l'état de l'art sur les domaines concernés dans la section~\ref{sec:etatart}.
+Après cette introduction, nous ferrons un point sur l'état de l'art des domaines concernés dans la section~\ref{sec:etatart}.
 Il sera suivi, dans la section~\ref{sec:vision}, par les aspects mathématiques de la vision par ordinateur.
 La section~\ref{sec:strategie} exposera la stratégie que nous suivrons pour résoudre le problème posé.
 Nous terminerons par un point sur l'avancement du projet, avant une brève conclusion.

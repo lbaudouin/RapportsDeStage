@@ -12,12 +12,14 @@ On retrouve donc :
 \item Les points d'intérêts dans l'image ainsi que leurs descripteurs associés
 \item Les points 3D reconstruits
 \item La trajectoire du robot calculée
+\item Informations provenant d'autres capteurs comme l'odométrie
 \end{itemize}
 
-Les points d'intérêts sont extraits à l'aide de la méthode de Harris.
-Un descripteur du point lui est associé, on utilisera dans un premier temps les descripteurs SIFT.
-D'autres type  seront testé pour comparer les performances, comme les informations mutuelle, MSER, Ogre, Surf et si aucun n'est très performant pour le cas hybride, nous serrons dans l'obligation de mettre au point un niveau type de descripteur.
+Les points d'intérêts sont extraits à l'aide de la méthode de Harris~\cite{Harris88}. Ce sont les points qui sont généralement situés aux intersections de segments ou qui ceux possèdent un contraste élevé avec ses voisins.
+Un descripteur du point lui est associé, on utilisera dans un premier temps les descripteurs SIFT~\cite{Lowe99}, qui est insensible aux changement d'échelle et aux rotations.
+D'autres types de descripteurs seront testé pour comparer les performances, comme les informations mutuelles, MSER, Ogre, SURF et si aucun n'est très performant pour le cas hybride, nous serrons dans l'obligation de mettre au point un niveau type de descripteur.
 
+Dans un second temps on pourra envisager l'exploration autonome, c'est à dire que le robot générera lui même une trajectoire d'exploration afin d'alimenter sa collection d'images.
 
 \subsection{Carte globale}
 
@@ -34,16 +36,22 @@ Plusieurs solutions pourront être retournés.
 On applique la transformation (rotation, translation, échelle) à la deuxième carte et on ajoute tous les points à la première.
 \end{enumerate}
 
+Si les cartes ne sont pas sécantes, le robot devra garder en mémoire deux cartes distinctes afin de pouvoir les fusionner lui même si lors d'un nouveau parcours si passe de l'une à l'autre.
+
 Dans un second temps on pourra envisagé la fusion de carte \emph{en ligne} lorsque deux robots sont assez proches pour communiquer et qu'ils trouvent un ou plusieurs endroits communs dans leurs cartes locales.
 
 \subsection{Navigation}
 
-L'étape de navigation ne peut s'effectuer qu'une fois les cartes crées.
+L'étape de navigation peut débuter sans carte dans un mode d'exploration de l'environnement.
+Cependant en présence d'individu, il est recommandé que les cartes soient vérifiées par un superviseur.
+La navigation ne peut donc s'effectuer qu'une fois les cartes locales crées, et une carte globale si possible.
+
 Le but final étant de pouvoir se déplacer de façon autonome d'un point A à un point B.
-Dans cette thèse il faudra que les deux points appartiennent à l'espace observé lors de la création des cartes.
+C'est à dire que le robot est déjà passé, au moins une fois, par les chemins qui lui est possible d'exploiter.
+Il faudra donc obligatoirement que les deux points de départ et d'arrivée appartiennent à l'espace observé lors de la création des cartes.
 
-
-
-L'exploration autonome pour la cartographie pourra être un autre thème qui pourra peut-être être le sujet d'une étude en fin de thèse.
-
+Afin de générer une trajectoire optimale, nous utiliserons des algorithme de navigation classique déjà exploités par un grand nombre de robot mobile.
+On fera particulièrement attention au respect du code de la route et à la sécurité des piétons en zone urbaine.
+Un effort sera également à réalisé afin d'éviter les collisions dans les environnements dynamiques.
+Ces travaux seront réalisés dans la deuxième partie de ma thèse. 
 
