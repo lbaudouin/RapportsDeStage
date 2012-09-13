@@ -36,7 +36,7 @@ $\mathbf{P} = [ \mathbf{R} ~ \mathbf{t} ]$
 
 \subsubsection{Calibration}
 \label{subsub:calibration}
-La calibration d'une caméra perspective est réalisé à partir d'une mire \cite{??}.
+La calibration d'une caméra perspective est réalisé à partir d'une mire \cite{HoraudBook, Hartley03Book}.
 
 L'opération de calibration de caméra revient à modéliser le processus de formation des images, c'est-à-dire trouver la relation entre les coordonnées spatiales d'un point de l'espace et le point associé dans l'image prise par la caméra.
 
@@ -46,6 +46,7 @@ La calibration consiste donc à estimer la matrice des paramètres intrinsèques
 
 
 \subsubsection{Méthode}
+\label{subsub:reconstruction}
 
 Comme nous avons pu voir précédemment, les seuls informations que l'on va utiliser dans les images sont des points.
 Pour donner un sens à ces listes de points, ils seront appairés.
@@ -76,18 +77,19 @@ Afin d'obtenir les matrices $\mathbf{R}$ et $\mathbf{t}$, nous devons utiliser u
 \mathbf{E} = \mathbf{R} . [\mathbf{t}]_\times
 \end{equation}
 Avec $[\mathbf{t}]_\times$ la matrice anti-symétrique\footnote{Si $\mathbf{t}=\begin{pmatrix}t_1\\t_2\\t_3\end{pmatrix}$, alors $[\mathbf{t}]_\times=\begin{pmatrix}0&-t_3&t_2\\t_3&0&-t_1\\-t_2&t_1&0\end{pmatrix}$} du vecteur $\mathbf{t}$.
-Nous pouvons maintenant extraire $\mathbf{R}$ et $\mathbf{t}$. Pour cela nous devons décomposer la matrice essentielle :
+Nous pouvons maintenant extraire $\mathbf{R}$ et $\mathbf{t}$. Pour cela nous devons décomposer la matrice essentielle  à l'aide d'une décomposition en valeurs singulières :
 $$\mathbf{E}=\mathbf{U} \mathbf{\Sigma} \mathbf{V}^{\top}$$
-Nous avons, $\mathbf{\Sigma} = \begin{pmatrix}s&0&0\\0&s&0\\0&0&0\end{pmatrix}$, alors:
+Comme expliquer dans~\cite{Hartley03Book}, la matrice essentielle est de rang 2 et les deux valeurs singulières sont égales.
+Nous avons donc : $\mathbf{\Sigma} = \begin{pmatrix}s&0&0\\0&s&0\\0&0&0\end{pmatrix}$.\\
+Alors:
 \begin{equation}
 [\mathbf{t}]_\times = \mathbf{V} \mathbf{W} \mathbf{\Sigma} \mathbf{V}^{\top}
 \end{equation}
 \begin{equation}
 \mathbf{R} = \mathbf{U} \mathbf{W}^{-1} \mathbf{V}^{\top}
 \end{equation}
-Avec, $\mathbf{W}=\begin{pmatrix}0&1&0\\-1&0&0\\0&0&1\end{pmatrix}$
-
-
+Avec, $\mathbf{W}=\begin{pmatrix}0&1&0\\-1&0&0\\0&0&1\end{pmatrix}$.\\
+Nous avons donc obtenu la position relative (rotation et translation) de la caméra à partir de deux listes de points issues d'images perspectives.
 
 
 \subsection{Modèle unifié}
@@ -95,8 +97,9 @@ Avec, $\mathbf{W}=\begin{pmatrix}0&1&0\\-1&0&0\\0&0&1\end{pmatrix}$
 Pour les caméras catadioptriques, un modèle permettant de représenter les caméras munies d'un miroir plan, parabolique, hyperbolique, elliptique a été mis en place.
 
 Ce modèle unifié, appelé modèle sphérique, prends en entré un seul paramètre $\xi$ pour représenter le miroir.
+Une série de projection va venir modéliser le couple miroir-caméra.
 
-\fig{images/videH}{Modèle sphérique pour caméras catadioptriques}{fig:modeleunifie}
+\smallfig{0.5}{images/modeleunifie.png}{Modèle sphérique pour caméras catadioptriques comme défini dans \cite{Courbon09PhD}}{fig:modeleunifie}
 
 \subsubsection{Modèle de projection}
 
@@ -144,7 +147,7 @@ Avec :
  \right.
 \end{equation}
 
-\subsubsection{Déplacement}
+\subsubsection*{Déplacement}
 
 Dans sa thèse \cite{Puig11PhD}, \citeauthor{Puig11PhD} expose une méthode pour calculer le déplacement de la caméra entre deux prises d'images omnidirectionnelles.
 Ceci est donc juste un rappel d'une méthode existante, analogue à la version perspective.

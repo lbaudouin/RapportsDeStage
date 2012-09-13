@@ -11,30 +11,33 @@ On peut trouver plusieurs algorithmes sur OpenSLAM.org :
   \item RobotVision
 \end{itemize}
 
-Cependant les travaux présents sur OpenSLAM.org sont généralement conçus pour des capteurs de type laser.
+Cependant les travaux présents sur OpenSLAM.org sont généralement conçus pour des capteurs de type laser. Ils nécessite donc un temps de conversion afin de pouvoir les utiliser avec des capteurs de vision.
 
-Il faut également que je regarde ce que propose la librairie MRPT\footnote{Mobile Robot Programming Toolkit}.
+Il faut également que je regarde ce que propose la librairie MRPT\footnote{Mobile Robot Programming Toolkit} qui est disponible dans les dépôts officiels d'Ubuntu et qui propose une partie SLAM.
 
 \subsubsection{Fusion de cartes}
 
 Afin de fusionner des cartes j'ai testé l'algorithme ICP sur deux nuages de points ayant un nombre de points plus ou moins important en commun.
 
-\begin{table}[h]
-  \begin{center}
-    \begin{tabular}{|c|c|c|c|c|c|}
-    \hline
-    Nb1 & Nb2 & commun & ratio & scale & succes \\
-    \hline
-    1200 & 1500 & 800 & 60\% & 1.0 & OK \\
-    1200 & 1500 & 800 & 60\% & 0.6 & Error \\
-    \hline
-    \end{tabular}
-  \caption{Réussite de l'ICP}
-  \end{center}
-\end{table}
-Les résultats montrent que pour pouvoir trouver la bonne solution, l'algorithme ICP a besoin d'un nombre assez important de points en commun dans les deux nuages de points.
+%\begin{table}[h]
+%  \begin{center}
+%    \begin{tabular}{|c|c|c|c|c|c|}
+%    \hline
+%    Nb1 & Nb2 & commun & ratio & scale & succes \\
+%    \hline
+%    1200 & 1500 & 800 & 60\% & 1.0 & OK \\
+%    1200 & 1500 & 800 & 60\% & 0.6 & Error \\
+%    \hline
+%    \end{tabular}
+%  \caption{Réussite de l'ICP}
+%  \end{center}
+%\end{table}
+Les résultats des tests réalisés montrent que pour pouvoir trouver la bonne solution, l'algorithme ICP a besoin d'un nombre assez important de points en commun entre les deux nuages de points.
+Un pourcentage de points communs inférieur à 70\% environ entraîne un mauvais recalage des nuages de points. 
 D'autre part, cet algorithme n'aboutit pas aux bons résultats si l'échelle est différentes entre les deux nuages.
 Dans le cas d'un capteur laser, l'échelle est toujours la même, mais pour une caméra, l'échelle dépend principalement de la distance entre les deux premières vues.
+L'algorithme ICP ne répond donc pas au cahier des charges imposé par l'utilisation de caméras.
+Afin de faciliter la réalisation de la fusion de cartes sur un grand environnement, il faudrait que je trouve un autre algorithme permettant d'avoir un a priori sur la position relative des nuages.
 
 \subsection{Travaux réalisés}
 
@@ -79,6 +82,5 @@ Ce projet étant étalé sur trois années, il reste donc deux ans et demi pour 
 \item Générer des déplacements en formation avec ou sans \emph{leader}
 \end{enumerate}
 
-\subsubsection{Grant}
-
-Mettre un Grant ici \dag
+%\subsubsection{Grant}
+%Mettre un Grant ici \dag
