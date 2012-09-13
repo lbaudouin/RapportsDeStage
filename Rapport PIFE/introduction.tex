@@ -3,8 +3,9 @@
 Avec les GPS, les radars de recul, les assistants de créneaux et autres gadgets, les aides à la conduite deviennent de plus en plus intelligentes.
 Devant le nombre de capteurs et de calculateurs embarqués on est en droit de se demander si le conducteur humain dans une voiture est encore nécessaire.
 
-Il existe déjà des projets comme la voiture Google qui roule de façon autonome sur certaines les routes américaines. Mais ces voitures nécessite un nombre très important de capteurs avec une précision très importante.
-On y retrouve un GPS précis au centimètre, des télémètres lasers plans ou 3D, ainsi que des accéléromètres multi-directionnels.
+Il existe déjà des projets comme la voiture Google qui roule de façon autonome sur certaines routes américaines, ou les voitures Volvo qui peuvent suivre un camion sous forme de convoi de quelques véhicules.
+Mais ces voitures nécessite un nombre très important de capteurs avec une précision très importante.
+On y retrouve au choix : un GPS précis au centimètre, des télémètres lasers plans ou 3D, ainsi que des accéléromètres multi-directionnels e tout souvent complété par quelques caméras embarquées.
 
 Ces capteurs ont un coût important et ne sont pas à la porté des particuliers.
 C'est pourquoi nous travaillons sur des véhicules autonome utilisant la vision, le prix d'une caméra étant largement inférieur à celui d'un télémètre laser 3D.
@@ -12,7 +13,7 @@ C'est pourquoi nous travaillons sur des véhicules autonome utilisant la vision,
 Cependant, les algorithmes en développement ne sont pas encore adaptés à des véhicules roulant à haute vitesse.
 En attendant que le matériel et les programmes le permettent, nous allons utiliser un véhicule autonome roulant à basse vitesse, un VipaLab (voir figure~\ref{fig:vipalab}).
 
-\fig{images/videH.jpg}{Un VipaLab, véhicule de la société \warning{APOJEE}}{fig:vipalab}
+\smallfig{0.4}{images/VIPALAB.jpg}{Un VipaLab, véhicule de la société \warning{APOJEE}}{fig:vipalab}
 
 Le but final est d'avoir une flotte de véhicules autonomes, en libre service, dans le centre ville de Clermont-Ferrand.
 A partir d'un point initial, le robot devra être capable de planifier son trajet jusqu'à la destination souhaitée par l'utilise et de l'exécuter de manière totalement autonome mais sécurisé.
@@ -22,7 +23,7 @@ Dans un environnement aussi contraint qu'une zone piétonne, le robot doit pouvo
 L'utilisation de caméras perspectives avant et arrière ne sera pas obligatoirement suffisant dans certains cas.
 C'est pourquoi nous avons souhaité travailler avec des caméras omnidirectionnelles (caméra catadioptrique, voir figure~\ref{fig:camcata}).
 
-\smallfig{0.4}{images/videV}{Caméra omnidirectionnelle composée d'une caméra affine et d'un miroir parabolique}{fig:camcata}
+\smallfig{0.6}{images/omni.png}{Caméra omnidirectionnelle composée d'un miroir parabolique et d'une caméra affine. L'image projetée est donc obtenue sous forme de disque.}{fig:camcata}
 
 Notre flotte de véhicule ne sera pas obligatoirement homogène, on y retrouvera différents robots (véhicules) et différents capteurs (caméras).
 La différences entre les robots n'impactera pas sur notre travaille car la gestion de la trajectoire sera calculé par un programme tiers.
@@ -31,4 +32,10 @@ Il existe de nombreux algorithme de SLAM\footnote{Simultaneous Localisation And 
 Cependant ils ne se concentrent que sur un type de caméra à la fois.
 
 L'innovation demandé dans ce travail de recherche est de mettre en place de nouveaux algorithmes permettant la cartographie et la navigation pour une flotte de robots munies de caméras de type différents.
-Pour parler une paire de caméras, composée d'une caméra perspective et d'une caméra omnidirectionnelle, nous utiliserons le terme de paire hybride, d'où la notion de vision hybride.
+Pour parler d'une paire de caméras composée d'une caméra perspective et d'une caméra omnidirectionnelle, nous utiliserons le terme de paire hybride, d'où la notion de vision hybride.
+
+\vspace{5mm}
+Après cette introduction, nous ferrons un point sur l'état de l'art sur les domaines concernés dans la section~\ref{sec:etatart}.
+Il sera suivi, dans la section~\ref{sec:vision}, par les aspects mathématiques de la vision par ordinateur.
+La section~\ref{sec:strategie} exposera la stratégie que nous suivrons pour résoudre le problème posé.
+Nous terminerons par un point sur l'avancement du projet, avant une brève conclusion.

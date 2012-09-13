@@ -1,4 +1,5 @@
 \section{État de l'art}
+\label{sec:etatart}
 
 \subsection{Vision, Reconstruction 3D}
 
@@ -115,17 +116,21 @@ Basé sur une méthode de vraisemblance (\textit{likehood}), Konolige \cite{Kono
 $\Rightarrow$ Utilisation de carte dense telle qu'une cartographie laser.
 
 
-\smallfig{0.6}{images/Gutmann99.png}{[Gutmann99] Incremental Mapping of Large Cycle Environments}{fig:gutmann}
+\smallfig{0.4}{images/Gutmann99.png}{[Gutmann99] Incremental Mapping of Large Cycle Environments}{fig:gutmann}
 Le papier \cite{Gutmann99} parle de la recherche de recouvrement de scan dans une démarche d'exploration d'environnement. 
 Il utilise des parties de la carte globale afin de voir si le motif se retrouve autre part dans la carte pour effectuer une fermeture de boucle.\\
 $\Rightarrow$ Utilisation de carte dense telle qu'une cartographie laser.
 
 
 \smallfig{0.8}{images/Strasdat10.png}{[Strasdat10] Scale Drift-Aware Large Scale Monocular SLAM}{fig:strasdat}   
-Un des papiers les plus intéressant en vision monoculaire est \cite{Strasdat10}, qui, à l'aide d'une caméra perspective reconstruit un batiment en utilisant un ajustement de faisceaux qui corrige la dérive du facteur d'échelle.
-Un pré-ajustement est effectué avec une fenêtre glissante (quelques images), puis une fois la fermeture de boucle détectée, un ajustement global sur 7 degrés de liberté (rotation, translation échelle) est effectué. 
+Un des papiers les plus intéressant en vision monoculaire est \cite{Strasdat10}, qui, à l'aide d'une caméra perspective reconstruit un bâtiment en utilisant un ajustement de faisceaux qui corrige la dérive du facteur d'échelle.
+Un pré-ajustement est effectué avec une fenêtre glissante de quelques images lors de la première création du modèle 3D.
+Puis une fois la fermeture de boucle est détectée, un ajustement global sur 7 degrés de liberté (rotation, translation échelle) est effectué.
+Comme nous pouvons le voir sur la figure~\ref{fig:strasdat} extraite de papier précédemment cité, la reconstruction initiale de l'environnement donne le résultat en haut à gauche (noir).
+La fermeture de boucle permet de corrigé légèrement la le modèle pour que les parties en correspondance se recoupent effectivement, le résultat est en haut à droite (vert).
+Enfin l'ajustement de faisceaux proposé corrige considérablement le modèle [en bas à gauche (rouge)], jusqu'à retrouver la forme du bâtiment d'origine.
 
-
+Tous les algorithmes vus utilisent un système de fermeture de boucles. \warning{Finir la phrase}
 \smallfig{0.2}{images/Korrapati11.png}{[Korrapati11] Efficient Topological Mapping with Image Sequence Partitionning}{fig:korrapati}  
 Pour les expériences avec une caméra omnidirectionnelle \cite{Korrapati11}, un système de gestion des amères à été mis en place afin de pouvoir retrouver rapidement les fermetures de boucle.\\
 Ce système pourra être utilisé dans le cas de notre étude (voir SoViN, \ref{subsub:sovin}).
@@ -147,8 +152,8 @@ L'autre point est la précision de position (et d'orientation) relative des robo
 
 
 
-\smallfig{0.2}{images/Howard06.png}{[Howard06] Multi-robot Simultaneous Localiszation and Mapping using Particule Filters}{fig:howard}  
-\warning{J'ai pas bien compris} le papier \cite{Howard06}
+%\smallfig{0.2}{images/Howard06.png}{[Howard06] Multi-robot Simultaneous Localiszation and Mapping using Particule Filters}{fig:howard}  
+%\warning{J'ai pas bien compris} le papier \cite{Howard06}
 
 
 \smallfig{0.4}{images/Aragues11.png}{[Aragues11PhD] Distributed Algorithms on Robotic Nectwoks for Coordination in Perception Tasks}{fig:aragues}  
@@ -163,7 +168,20 @@ $\Rightarrow$ Improve with mutli-camera sensors.
 
        
 La librairie \emph{SoViN}\footnote{Software for Visual Navigation} développée par J. \textsc{Courbon}\footnote{En collaboration avec L. \textsc{Lequièvre}, Y. \textsc{Mezouar} et E. \textsc{Royer}} permet une gestion optimisée des bases de données dans le cadre de la vision pour robot mobile.
-L'architecture proposée permet d'enregistrer simultanément une image, les points 2D extraits avec leur descripteurs respectifs, les points 3D reconstruits ainsi que la position du robot si elle est connue.
+L'architecture proposée permet d'enregistrer simultanément une image, les points 2D extraits avec leur descripteurs respectifs, les points 3D reconstruits ainsi que la position du robot si elle est connue. Voici un extrait de la documentation, décrivant l'objectif d'une telle bibliothèque :
+\begin{quote}
+\it Dans le contexte de la navigation de robots mobiles, le système de gestion de la carte de l'environnement doit répondre à plusieurs besoins:
+\begin{itemize}
+\item les données doivent être sauvegardées, récupérées et gérées de façon efficace afin de supporter des environnements de grande taille,
+\item l'accès et la récupération des données doivent être rapides pour permettre une utilisation en temps réel,
+\item l'intégrité des données par rapport à la structure proposée doit être conservée,
+\item la structure et les données mémorisées doivent s'adapter à plusieurs approches de navigation.
+\end{itemize}
+
+Ces besoins ont guidé le développement d'un système de gestion de la mémoire visuelle utilisant une Base De Données (BDD). Dans le contexte des BDD, de nombreux outils sont disponibles pour la conception, la gestion et la sauvegarde efficaces des données. En particulier, la méthode d'analyse et de conception MERISE a été employée pour décrire la structure correspondant à notre mémoire sensorielle.
+
+Un soin particulier a été porté à la définition des entités (et leurs attributs) du Modèle Conceptuel des Données et des relations (et leurs cardinalités) entre ces entités.
+\end{quote}
 
 Pour pouvoir l'utiliser dans le cadre de ma thèse il faut donc ajouter/revoir les blocks suivants :
 \begin{itemize}
@@ -176,4 +194,4 @@ Pour pouvoir l'utiliser dans le cadre de ma thèse il faut donc ajouter/revoir l
 \smallfig{0.7}{images/sovin.png}{Interface du logiciel \emph{SoViN} par J. \textsc{Courbon}}{fig:SOVIN}
 
 Une interface graphique est proposée pour construire et visualiser la base de donnée.
-Le fonctionnement détaillé est visible dans \cite{Lequievre08}, qui mentionne \warning{A LIRE}.
+Le fonctionnement détaillé est visible dans \cite{Lequievre08}, qui mentionne le fonctionnement global et détaille la base de données créée.
