@@ -1,19 +1,20 @@
 \section{Vision}
 \label{sec:vision}
 
-Cette partie sera une consacrée à la partie théorique de la reconstruction 3D.
+Cette partie sera une consacrée à l'aspect théorique de la reconstruction 3D.
 Dans un premier temps nous verrons le cas de la reconstruction à partir d'une paire de caméras classiques.
-Nous verrons ensuite le modèle unifié pour les caméras catadioptrique.
-Nous aborderons au final la vision hybride.
+Nous verrons ensuite le modèle unifié pour les caméras catadioptriques.
+%Nous aborderons au final la vision hybride.
 
 \subsection{Reconstruction 3D}
 \label{sub:reconstruction}
 
-La reconstruction 3D à partir de deux vues perspectives a été très bien formalisé dans le livre de \citeauthor{Hartley03Book} \cite{Hartley03Book}.
-En prenant deux vues d'une même caméra perspective, nous devons calculer le déplacement entre les lieux de prise de vue.
-Celui ci est déterminé par une matrice de projection $\mathbf{P}$ qui se compose de deux matrices $\mathbf{R}$ et $\mathbf{t}$, respectivement la matrice de rotation et la matrice de translation.
+La reconstruction 3D à partir de deux vues perspectives a été très bien formalisée dans le livre de \citeauthor{Hartley03Book} \cite{Hartley03Book}.
+En prenant deux vues en utilisant une même caméra perspective, nous devons calculer le déplacement entre les lieux de prise de vue.
+Celui-ci est déterminé par une matrice de projection $\mathbf{P}$ qui se compose de deux matrices $\mathbf{R}$ et $\mathbf{t}$, respectivement la matrice de rotation et la matrice de translation.
 
-La projection d'un point $\mathbf{X}$ dans l'espace donne le point $\mathbf{m}$ dans le plan image :
+La projection d'un point $\mathbf{X}$ de coordonnées $\begin{pmatrix}X&Y&Z\end{pmatrix}^\top$ dans l'espace donne le point $\mathbf{m}$ de coordonnées $\begin{pmatrix}u&v\end{pmatrix}^\top$ dans le plan image.
+En utilisant les coordonnées homogènes, nous pouvons d'écrire un modèle linaire de projection dans le cas d'une caméra perspective :
 \begin{equation}
 s \underbrace{\begin{pmatrix}u \\ v \\ 1\end{pmatrix}}_{\mathbf{m}} = 
 \underbrace{\begin{pmatrix}f_u && 0 && u_0 \\ 0 && f_v && v_0 \\ 0 && 0 && 1\end{pmatrix}}_{\mathbf{K}} . 
@@ -34,32 +35,38 @@ $\mathbf{P} = [ \mathbf{R} ~ \mathbf{t} ]$
 \item $s$ est un facteur réel quelconque ($s \in \Re$)
 \end{itemize}
 
+Ceci est un modèle simplifié ne prenant pas en compte les différentes distorsions que l'on peut retrouver dans une image (distorsions radiales, distorsion tangentielle, \dots).
+
 \subsubsection{Calibration}
 \label{subsub:calibration}
-La calibration d'une caméra perspective est réalisé à partir d'une mire \cite{HoraudBook, Hartley03Book}.
+La calibration d'une caméra perspective est réalisé à partir d'une mire composée généralement par une grille ou de points \cite{HoraudBook, Hartley03Book}.
 
 L'opération de calibration de caméra revient à modéliser le processus de formation des images, c'est-à-dire trouver la relation entre les coordonnées spatiales d'un point de l'espace et le point associé dans l'image prise par la caméra.
 
 Dans le cas d'une caméra perspective, le modèle de projection est linéaire, comme présenté dans l'équation~\ref{eq:projection}.
 La matrice de projection ou matrice de paramètres extrinsèques $\mathbf{P}$, dépends de la position de la caméra et non du capteur lui-même.
-La calibration consiste donc à estimer la matrice des paramètres intrinsèques ainsi que les éventuelles distorsions de l'image.
-
+La calibration consiste donc à estimer la matrice des paramètres intrinsèques $\mathbf{K}$ ainsi que les éventuelles distorsions de l'image.
+$$
+\mathbf{K} = \begin{pmatrix}f_u && 0 && u_0 \\ 0 && f_v && v_0 \\ 0 && 0 && 1\end{pmatrix} 
+$$
+Avec $f_u$ et $f_v$ les coefficients dépendants des focales selon les axes $\vec{x}$ et $\vec{y}$ de l'image.
+Le point de coordonnées $\begin{pmatrix}u_0&v_0\end{pmatrix}^\top$ est le centre de l'image issue du capteur optique.
 
 \subsubsection{Méthode}
 \label{subsub:reconstruction}
 
-Comme nous avons pu voir précédemment, les seuls informations que l'on va utiliser dans les images sont des points.
+Comme nous avons pu voir précédemment, les seuls informations que nous allons utiliser dans les images sont des points.
 Pour donner un sens à ces listes de points, ils seront appairés.
 C'est à dire que chaque point dans la première image devra avoir un point correspondant dans la seconde.
 
-On va pouvoir calculer un matrice regroupant toutes les informations possible de tiré de cette configuration.
+On va pouvoir calculer un matrice regroupant toutes les informations possible de tirer de cette configuration.
 Cette matrice ce nommera la matrice fondamentale, notée $\mathbf{F}$.
-Elle est définit pour toutes paires de points $i$ dans les images 1 et 2, par la suite l'indice $i$ sera omis.
+Elle est définit pour toutes paires de points $i$ dans les images 1 et 2 (par la suite l'indice $i$ sera omis) comme solution de l'équation :
 \begin{equation}
-\mathbf{m}_{i,1}.\mathbf{F}.\mathbf{m}_{i,2} = 0
+\mathbf{m}_{i,1}^ \top.\mathbf{F}.\mathbf{m}_{i,2} = 0
 \label{eq:fondamentale}
 \end{equation}
-Connaissant la matrice intrinsèque de la caméra (voir \ref{subsub:calibration}), nous pouvons éliminer les facteurs induit par les focales, afin de normaliser la matrice fondamentale.
+Connaissant la matrice intrinsèque de la caméra (voir \ref{subsub:calibration}), nous pouvons éliminer les facteurs induits par les focales, afin de normaliser la matrice fondamentale.
 On obtiendra la matrice essentielle $\mathbf{E}$ :
 \begin{equation}
 \mathbf{E} = \mathbf{K}_1^{\top} . \mathbf{F} . \mathbf{K}_2
@@ -67,7 +74,7 @@ On obtiendra la matrice essentielle $\mathbf{E}$ :
 Si les deux images sont acquis par la même caméra, on aura $\mathbf{K}_1 = \mathbf{K}_2$.
 Nous pouvons obtenir la matrice essentielle directement depuis la liste de points, en normalisant les points eux-même.
 \begin{equation}
-(\mathbf{m}_{i,1}.\mathbf{K}_1^{-\top}).\mathbf{E}.(\mathbf{K}_2^{-1}.\mathbf{m}_{i,2}) = 0
+(\mathbf{m}_{i,1}.\mathbf{K}_1^{-1})^\top.\mathbf{E}.(\mathbf{K}_2^{-1}.\mathbf{m}_{i,2}) = 0
 \label{eq:essentielle}
 \end{equation}
 
@@ -81,38 +88,38 @@ Nous pouvons maintenant extraire $\mathbf{R}$ et $\mathbf{t}$. Pour cela nous de
 $$\mathbf{E}=\mathbf{U} \mathbf{\Sigma} \mathbf{V}^{\top}$$
 Comme expliquer dans~\cite{Hartley03Book}, la matrice essentielle est de rang 2 et les deux valeurs singulières sont égales.
 Nous avons donc : $\mathbf{\Sigma} = \begin{pmatrix}s&0&0\\0&s&0\\0&0&0\end{pmatrix}$.\\
-Alors:
+Alors, en définissant   $\mathbf{W}=\begin{pmatrix}0&1&0\\-1&0&0\\0&0&1\end{pmatrix}$ on obtient :
 \begin{equation}
 [\mathbf{t}]_\times = \mathbf{V} \mathbf{W} \mathbf{\Sigma} \mathbf{V}^{\top}
 \end{equation}
 \begin{equation}
 \mathbf{R} = \mathbf{U} \mathbf{W}^{-1} \mathbf{V}^{\top}
 \end{equation}
-Avec, $\mathbf{W}=\begin{pmatrix}0&1&0\\-1&0&0\\0&0&1\end{pmatrix}$.\\
 Nous avons donc obtenu la position relative (rotation et translation) de la caméra à partir de deux listes de points issues d'images perspectives.
+La triangulation peut donc avoir lieu.
 
 
 \subsection{Modèle unifié}
 
 Pour les caméras catadioptriques, un modèle permettant de représenter les caméras munies d'un miroir plan, parabolique, hyperbolique, elliptique a été mis en place.
 
-Ce modèle unifié, appelé modèle sphérique, prends en entré un seul paramètre $\xi$ pour représenter le miroir.
+Ce modèle unifié, appelé modèle sphérique, prend en entrée un seul paramètre $\xi$ pour représenter le miroir.
 Une série de projection va venir modéliser le couple miroir-caméra.
 
-\smallfig{0.5}{images/modeleunifie.png}{Modèle sphérique pour caméras catadioptriques comme défini dans \cite{Courbon09PhD}}{fig:modeleunifie}
+\smallfig{0.6}{images/modeleunifie.png}{Modèle sphérique pour caméras catadioptriques comme défini dans \cite{Courbon09PhD}}{fig:modeleunifie}
 
 \subsubsection{Modèle de projection}
 
 Soit $\mathbf{X}$ un point dans le repère monde.
 On suppose la caméra au point $O$ de coordonnées $(0,0,0)$ avec l'axe $\vec{z}$, l'axe principal de la caméra.
 
-On va projeter le point $X$ sur la sphère unitaire centrer en $O$. On obtiendra le point $X_m$.
+On va projeter le point $X$ sur la sphère unitaire centrée en $O$. On obtiendra le point $X_m$ :
 \begin{equation}
 X_m = \frac{X}{\rho}
 \end{equation}
 Avec $\rho = ||X|| = \sqrt{X^2+Y^2+Z^2}$.
 
-On projete enfin le point $X_m$ sur le plan de $Z = 1 - \xi$ :
+On projette enfin le point $X_m$ sur le plan de $Z = 1 - \xi$ :
 \begin{equation}
 x = \begin{bmatrix}  \frac{X}{Z+\xi \rho} && \frac{Y}{Z +\xi \rho} && 1 \end{bmatrix}^{\top}
 \end{equation}
@@ -121,8 +128,9 @@ Pour finir on applique la transformée homographique due aux paramètres intrins
 \begin{equation}
 m= K x
 \end{equation}
+L'ensemble de la projection n'est pas linéaire et ne peut donc pas s'écrire sous la forme une équation comme pour le modèle perspectif.
 
-\subsubsection{Retroprojection}
+\subsubsection{Rétro-projection}
 
 A partir du point $m$ dans l'image on souhaite avoir le point 3D dans le repère monde correspondant.
 
@@ -130,7 +138,7 @@ A partir du point $m$ dans l'image on souhaite avoir le point 3D dans le repère
 x = \begin{bmatrix} x && y && 1 \end{bmatrix}^{\top} = K^{-1} m
 \end{equation}
 
-On inverse la fonction de projection pour obtenir les coordonnées du point du la shpère :
+On inverse la fonction de projection pour obtenir les coordonnées du point de la shpère :
 \begin{equation}
 X_m = (\nu^{-1} + \xi) \bar{x}
 \end{equation}
@@ -146,6 +154,9 @@ Avec :
   \end{matrix}
  \right.
 \end{equation}
+Nous avons maintenant un point sur la sphère correspondant au point image.
+Sachant que lors de la projection celui-ci est sur la droite reliant le point 3D et le centre de la sphère, nous pouvons conclure que nous connaissons la direction du point 3D réel, puisqu'il est porté par la droite $(OX_m)$.
+En ayant deux points de vues distincts, il suffit de trouver le croisement des deux droites pour reconstruire le point 3D.
 
 \subsubsection{Déplacement}
 
@@ -154,7 +165,7 @@ Ceci est donc juste un rappel d'une méthode existante, analogue à la version p
 On notera avec un accent circonflexe les vecteurs ou matrice qui seront \emph{liftés}.
 Soit $q=\begin{pmatrix}q_1&q_2&q_3&q_4\end{pmatrix}^\top$, on aura $\hat{q} = \begin{pmatrix}q_1^2&q_1q_2&q_2^2&q_1q_3&q_2q_3&q_3^2\end{pmatrix}^\top$
 
-On définit ensuite une relation régissant les points :
+On définit ensuite une relation entre les points 3D les points 2D :
 \begin{equation}
 \widehat{[q]}_\times \text{P}_{cata} \hat{Q} = 0
 \end{equation}
@@ -164,9 +175,9 @@ Que nous pouvons mettre sous forme d'un système d'équations $6n\times60$:
 \end{equation}
 ($\otimes$ est le produit de Kronecker)
 
-On peut résoudre ce système d'équation par la méthode des moindres carrés en utilisant la SVD\footnote{Singular Value Decomposition}.
+On peut résoudre ce système d'équations par la méthode des moindres carrés en utilisant la SVD\footnote{Singular Value Decomposition}.
 On remarque que le rang d'une matrice symétrique $3\times3$ est 2, et que sa version \emph{liftée} est de rang 3.
-Il faudra donc avoir au minimum 20 points car ils n'apportent que 3 équations indépendantes par paires.
+Il faudra donc avoir au minimum 20 points pour résoudre le système car ils n'apportent que 3 équations indépendantes par paires.
 
 %\begin{equation}
 %c_x = \frac{M_{46}}{M_{66}}
@@ -203,6 +214,10 @@ $\hat{R}_{est} = \hat{R}_y^{-1}(\beta).\hat{R}_{est}$
 \begin{equation}
 \alpha = \tan^{-1}\left(\frac{\hat{R}_{est,42}}{\hat{R}_{est,22}}\right)
 \end{equation}
+Une fois les trois angles obtenu, nous pouvons reconstruire la matrice de rotation classique $\mathbf{R}$.
+
+Cependant, lors des simulations, les résultats obtenus pour le déplacement de la caméra étaient tous faux.
+Lors d'un déplacement en ligne droite, l'estimation du mouvement et la reconstruction 3D sont corrects, mais dès qu'une rotation est amorcée l'algorithme ne converge plus vers la solution réelle.
 
 %\subsection{Vision Hybride}
 %Puig \cite{Puig08}

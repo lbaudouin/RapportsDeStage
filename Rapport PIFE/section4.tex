@@ -4,14 +4,14 @@
 
 \subsubsection{Reconstruction 3D}
 
-La reconstruction 3D étant un domaine de recherche répandu, un grand nombre d'algorithmes existe déjà. J'ai donc tenté de trouver une librairie permettant de reconstruire un nuage de points à partir d'une liste d'images.
+La reconstruction 3D étant un domaine de recherche répandu, un grand nombre d'algorithmes existe déjà dans la théorie. J'ai donc tenté de trouver une librairie gratuite permettant de reconstruire un nuage de points à partir d'une liste d'images.
 On peut trouver plusieurs algorithmes sur OpenSLAM.org :
 \begin{itemize}
   \item ScaViSLAM
   \item RobotVision
 \end{itemize}
 
-Cependant les travaux présents sur OpenSLAM.org sont généralement conçus pour des capteurs de type laser. Ils nécessite donc un temps de conversion afin de pouvoir les utiliser avec des capteurs de vision.
+Cependant les travaux présents sur OpenSLAM.org sont généralement conçus pour des capteurs de type laser. Ils nécessitent donc un temps de conversion afin de pouvoir les utiliser avec des capteurs de vision, ceci n'étant pas toujours réalisable.
 
 Il faut également que je regarde ce que propose la librairie MRPT\footnote{Mobile Robot Programming Toolkit} qui est disponible dans les dépôts officiels d'Ubuntu et qui propose une partie SLAM.
 
@@ -46,15 +46,15 @@ Ils ont pour but de tester point par point les différentes fonctions à réalis
 \begin{itemize}
 \item Calibration : Effectue la calibration automatique d'une caméra perspective à partir d'une séquence d'images de mire
 \item Création d'images :  Permet de simuler un environnement et de créer des images perspectives ou omnidirectionnelles ainsi que le nuage de points associé
-\item Sélecteur de points : Affiche deux images côte à côte afin de choisir les points en correspondance par simple clique
+\item Sélecteur de points : Affiche deux images côte à côte afin de choisir les points en correspondance manuellement par simple clique
 \item Modificateur de points : Permet de déplacer et/ou de redimensionner un nuage de points 3D
 \item Création 3D : Permet de créer un modèle 3D depuis des images ou depuis une vidéo, seule la version pour caméra perspective est opérationnelle à ce jour
 \item ICP : Fonctions de base permettant de tester l'algorithme ICP
-\item Bibliothèque de reconstruction 3D : Ensemble de fonctions utiles pour la reconstruction 3D ainsi que des outils pour travailler avec les images, les fichiers de points, et les fonctions mathématiques nécessaire pour résoudre les équations présentées dans la section~\ref{sec:vision}.
+\item Bibliothèque de reconstruction 3D : Ensemble de fonctions utiles pour la reconstruction 3D ainsi que des outils pour travailler avec les images, les fichiers de points, ainsi que les fonctions mathématiques nécessaire pour résoudre les équations présentées dans la section~\ref{sec:vision}.
 \end{itemize}
 
 \vspace{5mm}
-Les images~\ref{fig:create} et~\ref{fig:build} permettent de voir le résultat d'une simulation de reconstruction 3D d'un environnement à l'aide d'une caméra perspective :
+Les images~\ref{fig:create} et~\ref{fig:build} permettent de voir le résultat d'une simulation de reconstruction 3D d'un environnement à l'aide d'une caméra perspective.
 \begin{figure}[htp]
 \begin{center}
 \subfloat[Nuage simulé]{\label{fig:create}\includegraphics[width=0.45\linewidth]{images/createimage.png}}
@@ -66,15 +66,15 @@ Les images~\ref{fig:create} et~\ref{fig:build} permettent de voir le résultat d
 
 \subsubsection{Points importants}
 
-Un certain nombre de points important reste cependant à explorer :
+Un certain nombre de points importants reste cependant à explorer :
 \begin{enumerate}
-\item Vision : Afin de détecter les points en correspondance entre des images de types différents, nous avons besoin de tester d'autre descripteurs que SIFT, (SURF, MI, MSER, Ogre, \dots)
+\item Vision : Afin de détecter les points en correspondance entre des images de types différents de manière automatique, nous avons besoin de tester d'autres descripteurs que SIFT $\rightarrow$ SURF, MI, MSER, Ogre, \dots
 \item Ajustement de faisceaux : Dans le cas d'images provenant de caméras différentes et en prenant également en compte la dérive du facteur d'échelle
 \item Temps réel : Établir une communication en temps réel entre les robots pour la fusion de carte (voir les travaux de R. \textsc{Aragues}~\cite{Aragues11PhD})
-\item SoViN : Implémenter les fonctions manquantes dans SoViN puis le lier à ma bibliothèque 
+\item SoViN : Implémenter les fonctions manquantes dans SoViN puis la lier à ma bibliothèque 
 \end{enumerate}
 
-Ce projet étant étalé sur trois années, il reste donc deux ans et demi pour abordé en temps voulu les points précédents, je dois notamment mettre en place les idées suivantes :
+Ce projet étant étalé sur trois années, il reste donc deux ans et demi pour aborder en temps voulu les points précédents, je dois notamment mettre en place les idées suivantes :
 \begin{enumerate}
 \item Une surveillance dans un environnement dynamique et inconnu
 \item Améliorer la localisation à l'aide de cartes topologiques ainsi qu'en utilisant les informations de position relatives entre les robots

@@ -6,7 +6,7 @@
 \subsubsection{Vision classique}
 
 Nos robots seront équipés de caméras de types différents.
-On va donc commencer par traiter au cas par cas les algorithmes nécessaires pour les caméras.
+On va donc commencer par traiter au cas par cas les algorithmes nécessaires pour l'utilisation caméras.
 La caméra la plus courante est la caméra perspective (ou \textit{pinhole} en anglais).
 De très nombreux ouvrages existent sur la reconstruction à l'aide d'une caméra perspective, on retrouve notamment  \citetitle{Hartley03Book} de \citeauthor{Hartley03Book} \cite{Hartley03Book}.
 
@@ -14,36 +14,37 @@ A partir d'images successives issues d'un même capteur, nous pouvons reconstrui
 La reconstruction se fait sous la forme d'un nuage de points plus ou moins compact en fonction des détails présents dans les images.
 Une fois un nuage de points obtenu, nous pouvons affiner ce modèle en effectuant un ajustement de faisceaux (\textit{bundle adjustement}), cette opération consiste à passer un Levenberg-Marquardt\footnote{Algorithme interpolant l'algorithme de Gauss-Newton et l'algorithme de la descente de gradient} sur les données afin de minimiser les erreurs de projection.
 
-On retrouve également les techniques de reconstruction avec deux caméras dans le livre \cite{HoraudBook}, \citetitle{HoraudBook} de \citeauthor{HoraudBook}, ainsi que les algorithmes permettant un recalage 3D/2D, c’est-à-dire trouver la position d'un nuage de points connaissant sa projection dans une image.
+On retrouve également les aspects mathématiques de la reconstruction avec deux caméras dans le livre \cite{HoraudBook}, \citetitle{HoraudBook} de \citeauthor{HoraudBook}, ainsi que les algorithmes permettant un recalage 3D/2D, c’est-à-dire trouver la position d'un nuage de points connaissant sa projection dans une image.
 
 \subsubsection{Vision mixte}
 
-L'utilisation complémentaire de caméras omnidirectionnelles, nous pouvons nous demander si nous pouvons utiliser les deux types de caméras simultanément afin de créer le nuage de point.
-On retrouve ce genre de travaux quand les travaux de
+Avec l'utilisation complémentaire de caméras omnidirectionnelles, nous pouvons nous demander si nous pouvons utiliser les deux types de caméras simultanément afin de créer le nuage de point.
+On retrouve ce genre de travaux quand les études réalisées par
 \citeauthor{Sturm02}, \citetitle{Sturm02} \cite{Sturm02}.
-Certains problèmes restent cependant à éclaircir, comme la calibration des caméras omnidirectionnelles.
+Certains problèmes restent cependant à éclaircir, comme la calibration des caméras omnidirectionnelles et quel modèle de caméra est à utiliser.
 
-En lisant ce papier, on se demande alors comment extraire les variables intéressantes comme la matrice essentielle ou les matrices de rotation et de translation (voir section~\ref{subsub:reconstruction}).
+D'autre part, en lisant ce papier, on se demande comment extraire les variables intéressantes comme la matrice essentielle ou les matrices de rotation et de translation (voir section~\ref{subsub:reconstruction}).
 
-Une autre question consiste à trouvé un moyen de trouver des points correspondants entre les images perspectives et les images omnidirectionnelles.
+Une autre interrogation consiste à trouvé un moyen de trouver des points correspondants entre les images perspectives et les images omnidirectionnelles.
 Le papier \cite{Puig08} utilise les descripteurs SIFT\footnote{Scale Invariant Feature Transform}, mais d'autres descripteurs seraient envisageables.
 Le principe de la reconstruction à partir d'un système hybride est semblable à celui proposé pour un système classique.
 On construit ensuite une matrice fondamentale caractérisant la scène à l'aide des correspondances des points dans les deux images.
 Plusieurs choix sont ici proposés pour cette matrice fondamentale : $\mathbf{F}_{43}$, $\mathbf{F}_{63}$ and $\mathbf{F}_{66}$.
 On retrouve le même problème que pour le papier précédent \cite{Sturm02}, comment peut-on extraire les matrices importantes $\mathbf{R}$ et $\mathbf{t}$ ou $\mathbf{E}$ depuis $\mathbf{F}_{xx}$?
 
-\smallfig{0.5}{images/Bastanlar09.png}{Vision mixte}{fig:bastanlar}
+\smallfig{0.5}{images/Bastanlar09.png}{Vision mixte : images d'une même scène par une caméra perspective et une caméra omnidirectionnelle}{fig:bastanlar}
  
-  La reconstruction ou \emph{Structure from Motion} pour un système hybride\footnote{Caméra perspective + caméra omnidirectionnelle} \cite{Bastanlar09PhD} est donc légèrement différente du fais que la matrice fondamentale ne soit pas carrée.
-Ceci est du au fait que les coordonnées soient \emph{liftées}, c'est-à-dire transformées en étant projetées sur une conique.
+  La reconstruction ou \emph{Structure from Motion} pour un système hybride\footnote{Caméra perspective + caméra omnidirectionnelle} \cite{Bastanlar09PhD} (voir figure~\ref{fig:bastanlar}) est donc légèrement différente car la matrice fondamentale n'est pas carrée, ce qui rend inexploitables certaines équations de la vision classique.
+Ceci est du au fait que les coordonnées soient \emph{liftées}, c'est-à-dire transformées en étant projetées sur une conique~\cite{Sturm07}.
+
  %$$q_p^t K_p^{-t} ~E~ \theta^t \hat{K}_c^t \hat{q}_c = 0$$
  %$\Rightarrow$ No information on calibration of omnidirectional camera $\hat{K}_c$ (see Puig PhD page 25)
   %No information on \textbf{E} computation and \textbf{R},\textbf{t} extraction.
 
 \subsubsection{Amères et descripteurs}
 
-Lorsqu'on a une image, classique ou omnidirectionnelle, nous pouvons nous demander ce que nous devons voir sur cette image.
-Quelles sont les amères intéressantes, et pourquoi ?
+Lorsqu'on a une image, classique ou omnidirectionnelle, nous pouvons nous demander ce que nous pouvons voir, mais surtout, ce que nous devons voir sur ces images pour extraire les informations recherchées.
+Quelles sont les amères intéressantes dans notre cas d'étude, et pourquoi ?
 
 On retrouve généralement :
 \begin{itemize}
@@ -55,24 +56,24 @@ On retrouve généralement :
 Chaque type d'amère possède des avantages et des inconvénients :
 \begin{table}[h]
   \begin{center}
-    \begin{tabular}{|c|c|c|}
+    \begin{tabularx}{0.9\linewidth}{|c|X|X|}
       \hline
       \bf Type & \bf Avantages & \bf Inconvénients \\
       \hline
-      Point & \begin{minipage}{0.4\linewidth}Générique, présent en grand nombre dans l'environnent\end{minipage} & \begin{minipage}{0.4\linewidth}Associer deux points nécessite des descripteurs\end{minipage}\\
+      Point & Générique, présent en grand nombre dans les images & Associer deux points nécessite des descripteurs\\
       \hline
-      Droite & \begin{minipage}{0.4\linewidth}Robuste, résiste aux occlusions partielles\end{minipage} & \begin{minipage}{0.4\linewidth}Peu présent en extérieur\end{minipage}\\
+      Droite & Robuste, résiste aux occlusions partielles & Peu présent en extérieur\\
       \hline
-      Courbe & \begin{minipage}{0.4\linewidth}Plus de liberté qu'une droite\end{minipage} & \begin{minipage}{0.4\linewidth}Sensible aux déplacement de la caméra qui vont modifier le profil pour un objet en 3D\end{minipage}\\
+      Courbe & Plus de libertés qu'une droite & Sensible aux déplacement de la caméra qui vont modifier le profil de l'objet 3D\\
       \hline
-      Ellipse & \begin{minipage}{0.4\linewidth}Facile à sélectionner manuellement, utilisé pour les mires\end{minipage} & \begin{minipage}{0.4\linewidth}Peu présent en général\end{minipage}\\
+      Ellipse & Facile à sélectionner manuellement, utilisé pour les mires & Peu présent dans l'environnement en général\\
       \hline
-    \end{tabular}    		
+    \end{tabularx}    		
   \end{center}
-  \caption{Comparaison des amères}
+  \caption{Comparaison des amères en vision}
 \end{table}
 
-Nous ne pourrons donc pas utiliser les courbes et les ellipses car pour l'un il nous sera difficile de les définir, et pour l'autre on ne les retrouve pas en assez grand nombre dans un environnement classique.
+Nous ne pourrons donc pas utiliser les courbes et les ellipses car dans le premier cas il nous sera difficile de les définir automatiquement, et pour l'autre on ne les retrouve pas en assez grand nombre dans un environnement classique.
 Les lignes sont particulièrement présentes dans les environnements intérieurs, mais malheureusement beaucoup moins en extérieur.
 Notre robots devant naviguer principalement en extérieur, ce type d'amère est incompatible avec notre besoin.
 Il reste donc les points, qui sont naturellement présent dans toutes les images nettes d'un environnement.
@@ -80,32 +81,33 @@ Le défi sera donc de caractériser les différents points de l'image afin de po
 Plusieurs outils sont à notre disposition, il s'agit de descripteurs.
 On va caractériser une imagette d'une taille fixe autour du point, puis enregistrer l'information en même temps que la position du point dans l'image.
 
-Dans le cas des images omnidirectionnelles, compte tenu de la déformation des images, les seules amères pouvant être utilisées sont :
+Ce choix est validé par l'utilisation d'images omnidirectionnelles, compte tenu de la déformation de ces images, les seules amères pouvant être utilisées de façon précise sont :
 \begin{itemize}
 \item Les points : les appariements se font avec principalement SIFT
 \item Les droites : détection de droites verticales (droites se coupant au centre de l'image), droites parallèles (sous forme de coniques dans l'image)
 \end{itemize}
 On les retrouvent dans un très grand nombre d'article comme \cite{Goedeme07} (voir figure~\ref{fig:goedeme}) qui utilise une des propriétés intéressantes : une droite parallèle à l'axe optique de la caméra passera par le centre de l'image.
 Cette propriété est utile dans un environnement intérieur comportant des encadrements de porte, des coins de murs, des meubles ...
-\smallfig{0.6}{images/Goedeme07.png}{[Goedemé07] Omnidirectional Vision based Topological Navigation}{fig:goedeme}
+\smallfig{0.6}{images/Goedeme07.png}{[Goedemé07] Omnidirectional Vision based Topological Navigation. Utilisation de droites pour la vision omnidirectionnelle}{fig:goedeme}
 
-\smallfig{0.7}{images/Dame10.png}{[Dame10PhD] A unified direct approach for visual servoing and visual tracking using mutual information}{fig:dame}
-A. \textsc{Dame} \cite{Dame10PhD} propose un moyen de comparaison de deux imagettes, les \emph{informations mutuelles}, plus performant que les algorithmes habituellement proposés : SSD\footnote{Sum of Squared Differences} ou ZNCC\footnote{Zero-mean Normalized Cross Correlation}.
-Comparer MI avec SIFT, SURF et autres descripteurs lors des cas de vision hybride perspective/catadioptrique.  
+Nous allons donc au final utiliser les amères de type point associés à des descripteurs.
+A. \textsc{Dame} \cite{Dame10PhD} propose un moyen de comparaison de deux imagettes, les \emph{informations mutuelles}(MI), plus performant que les algorithmes habituellement proposés : SSD\footnote{Sum of Squared Differences} ou ZNCC\footnote{Zero-mean Normalized Cross Correlation}.
+Il faudra donc comparer MI avec SIFT, SURF et autres descripteurs connus dans les cas de vision hybride perspective/catadioptrique ou omnidirectionnelle seule.  
+\smallfig{0.7}{images/Dame10.png}{[Dame10PhD] A unified direct approach for visual servoing and visual tracking using mutual information. Comparaison des algorithmes permettant de recaler une image occultée sur l'image d'origine}{fig:dame}
 
 \subsubsection{Trajectoire}
 
-En reconstruisant le modèle 3D de l'environnement, on obtient à chaque prise de vu la position de la caméra.
-En joignant les segments entre deux prises de vu, on obtient donc une approximation du chemin parcouru par la caméra.
+En reconstruisant le modèle 3D de l'environnement, on obtient à chaque prise de vue la position de la caméra.
+En joignant les segments entre deux prises de vue, on obtient donc une approximation du chemin parcouru par la caméra.
 Cependant ce résultat est généralement moins précis qu'avec un GPS car la fréquence d'acquisition des images est d'ordinaire plus lente avec une caméra.
-Ceci s'explique par le fait qu'il faille que les deux image soient légèrement différentes pour extraire des informations sur le déplacement.
+Ceci s'explique par le fait qu'il faille que les deux images soient légèrement différentes pour avoir la possibilité d'extraire des informations sur le déplacement.
 Des images trop approchées rendrait les calculs instables.
 
 \smallfig{0.5}{images/Rituerto10.png} {Ici la courbe noire est la trajectoire réelle, la bleue est obtenue par vision omnidirectionnelle, la rouge par la vision classique} {fig:rituerto}
-Dans le papier \cite{Rituerto10}, l'auteur compare  la reconstruction de la trajectoire obtenue d'une part à l'aide d'une caméra omnidirectionnelle et de l'autre par un SLAM classique (caméra perspective).
+Dans le papier \cite{Rituerto10} (voir figure~\ref{fig:rituerto}), l'auteur compare la reconstruction de la trajectoire obtenue : d'une part à l'aide d'une caméra omnidirectionnelle et de l'autre par un SLAM classique (caméra perspective).
 L'auteur propose l'utilisation du filtre de Kalman (EKF\footnote{Extended KalmanFilter}) couplé avec une caméra omnidirectionnelle.
 Ses résultats montrent qu'il obtient une meilleure précision qu'avec un SLAM classique.
-Bien que les précisions atteintes soient encore loin des capteurs tels que le GPS, les caméras permettent d'avoir un résultat assez proche de la réalité qui pourra toute fois être amélioré en utilisant des fermetures de boucles.
+Bien que les précisions atteintes soient encore loin des capteurs tels que le GPS, les caméras permettent d'avoir un résultat assez proche de la réalité qui pourra généralement être amélioré en utilisant des informations redondantes comme des fermetures de boucles.
 %On remarque également l'utilisation de SIFT pour les mises en correspondances dans le cas d'images omnidirectionnelles, un choix qui revient régulièrement.
 
 
@@ -129,18 +131,19 @@ La figure~\ref{fig:gutmann} montre le résultat d'un tel algorithme où les zone
 
 Un des papiers les plus intéressant en vision monoculaire est \cite{Strasdat10}, qui, à l'aide d'une caméra perspective reconstruit un bâtiment en utilisant un ajustement de faisceaux qui corrige la dérive du facteur d'échelle.
 Un pré-ajustement est effectué avec une fenêtre glissante de quelques images lors de la première création du modèle 3D.
-Puis une fois la fermeture de boucle est détectée, un ajustement global sur 7 degrés de liberté (rotation, translation échelle) est effectué.
-\smallfig{0.6}{images/Strasdat10.png}{[Strasdat10] Scale Drift-Aware Large Scale Monocular SLAM}{fig:strasdat}   
-Comme nous pouvons le voir sur la figure~\ref{fig:strasdat} extraite de papier précédemment cité, la reconstruction initiale de l'environnement donne le résultat en haut à gauche (noir).
-La fermeture de boucle permet de corrigé légèrement la le modèle pour que les parties en correspondance se recoupent effectivement, le résultat est en haut à droite (vert).
+Puis une fois que la fermeture de boucle est détectée, un ajustement global sur 7 degrés de liberté (rotation, translation échelle) est effectué.
+
+\smallfig{0.7}{images/Strasdat10.png}{[Strasdat10] Scale Drift-Aware Large Scale Monocular SLAM. \'Etapes de création de carte utilisant un ajustement de faisceaux corrigeant l'échelle.}{fig:strasdat}   
+Comme nous pouvons le voir sur la figure~\ref{fig:strasdat} extraite du papier précédemment cité, la reconstruction initiale de l'environnement donne le résultat en haut à gauche (noir).
+La fermeture de boucle permet de corriger légèrement le modèle pour que les parties en correspondance se recoupent effectivement, le résultat est en haut à droite (vert).
 Enfin l'ajustement de faisceaux proposé corrige considérablement le modèle [en bas à gauche (rouge)], jusqu'à retrouver la forme du bâtiment d'origine.
 
 \vspace{5mm}
 Tous les algorithmes vus utilisent un système de fermeture de boucles.
-Parmi les techniques existantes, on peut relevé quelques papiers intéressant comme \cite{Korrapati11} qui propose un système de gestion des amères mis en place afin de pouvoir retrouver rapidement les fermetures de boucle.
+Parmi les techniques existantes, on peut relever quelques papiers intéressants comme \cite{Korrapati11} qui propose un système de gestion des amères/descripteurs mis en place afin de pouvoir retrouver rapidement les fermetures de boucle.
 La figure~\ref{fig:korrapati} détaille le processus utilisé pour l'ISP\footnote{Image Sequence Partitioning}.
-\smallfig{0.6}{images/Korrapati11.png}{[Korrapati11] Efficient Topological Mapping with Image Sequence Partitionning}{fig:korrapati}  
 Ce système pourra être utilisé dans le cas de notre étude pour compléter la bibliothèque SoViN (voir SoViN, section~\ref{subsub:sovin}).
+\smallfig{0.7}{images/Korrapati11.png}{[Korrapati11] Efficient Topological Mapping with Image Sequence Partitionning. Schéma de fonctionne de l'algorithme proposé.}{fig:korrapati}  
 
 
 
@@ -151,23 +154,26 @@ Cette flotte ne sera pas forcement toujours compacte, c'est à dire qu'elle pour
 Les robots devront alors pouvoir basculer d'un mode de navigation individuel à un mode de navigation groupé.
 Il y a donc un aspect supplémentaire à prendre en compte, la coopération.
 
-\smallfig{0.3}{images/Hukui10.png}{[Hukui10] Mutual Localization of Sensor Node Robots}{fig:hukui}  
-Le papier \cite{Hukui10} se base sur l'utilisation des connaissances sur les positions relatives des robots afin d'améliorer la qualité de la localisation globale.
-Si un robot connaît la position d'un autre robot par rapport à sa position courante, il peut utiliser les informations acquises par le second pour alimenter sa base de données.
-Sur la figure~\ref{fig:hukui}, le robot blanc va pouvoir utiliser les points visibles par les robots gris en plus des points qu'il verra lui même.
-Ceci permet un plus grande robustesse des informations, mais nécessite une communication permanente entre les différents robots.
-Cependant quelques points importants restent à éclaircir : comment localiser les robots entre eux ?
-Effectivement, nous devons faire la différence entre un VipaLab et une voiture classique sus une image omnidirectionnelle, c'est donc un problème de détection puis de suivi d'objets.
-L'autre point est la précision de position (et d'orientation) relative des robots obtenue par la vision.
+Le papier \cite{Hukui10} se base sur l'utilisation des connaissances des positions relatives des robots afin d'améliorer la qualité de la localisation globale.
+Si un robot connaît la position d'un autre robot par rapport à sa position courante, il peut utiliser les informations acquises par le second pour alimenter sa propre base de données.
+
+\smallfig{0.4}{images/Hukui10.png}{[Hukui10] Mutual Localization of Sensor Node Robots. Extension du champ de vision d'un robot via la localisation d'autres robots.}{fig:hukui}  
+Sur la figure~\ref{fig:hukui} extraite de~\cite{Hukui10}, le robot blanc va pouvoir utiliser les points visibles par les robots gris en plus des points qu'il verra lui même.
+Ceci permet une plus grande robustesse des informations si plusieurs robots voient le même point, mais nécessite une communication permanente entre les différents robots.
+Cependant quelques points importants restent à éclaircir, dont le plus important : comment localiser les robots entre eux ?
+Effectivement, nous devons faire la différence entre un VipaLab et une voiture classique sus une image omnidirectionnelle, c'est donc un problème de détection puis de suivi d'objets qui peut s'avérer complexe.
+L'autre point est la précision plus ou moins importante sur les positions (et orientations) relatives des robots obtenues par la vision, qui va entraîné des erreurs non négligeables si les informations ne sont pas redondante c'est-à-dire si elles ne peuvent pas être re-vérifiées.
 
 %\smallfig{0.2}{images/Howard06.png}{[Howard06] Multi-robot Simultaneous Localiszation and Mapping using Particule Filters}{fig:howard}  
 %\warning{J'ai pas bien compris} le papier \cite{Howard06}
 
-\smallfig{0.4}{images/Aragues11.png}{[Aragues11PhD] Distributed Algorithms on Robotic Nectwoks for Coordination in Perception Tasks}{fig:aragues}  
+\smallfig{0.4}{images/Aragues11.png}{[Aragues11PhD] Distributed Algorithms on Robotic Nectwoks for Coordination in Perception Tasks. Partage des informations entre les robots afin de créer un carte globale.}{fig:aragues}  
 La thèse de \citeauthor{Aragues11PhD} \cite{Aragues11PhD} montre comment mettre en place un système efficace de communication inter-robots dans le cadre de fusion de cartes.
 Une grille de communication est créée afin de minimiser les trames de données à transmettre.
-Les informations remontent de proche en proche, en s'additionnant à chaque fois aux données présentes sur le robot, jusqu'à un robot unique qui va ensuite les renvoyer à l'ensemble de la flotte.
+Les informations remontent de proche en proche, en s'additionnant à chaque fois aux données présentes sur le robot, jusqu'à un robot qui va centraliser le tout.
+Ce robot unique va ensuite les renvoyer de façon optimisée à l'ensemble de la flotte.
 La figure~\ref{fig:aragues} est obtenue à partir de la fusion des données issues des différents robots (un par couleur).
+Ce principe pourra être utilisé dans le cadre de la création d'une carte en temps réel, mais également tout au long de la navigation afin d'améliorer l'ensemble des cartes embarquées.
 
 
 
@@ -175,8 +181,10 @@ La figure~\ref{fig:aragues} est obtenue à partir de la fusion des données issu
 \label{subsub:sovin}
 
        
-La librairie \emph{SoViN}\footnote{Software for Visual Navigation} développée par J. \textsc{Courbon}\footnote{En collaboration avec L. \textsc{Lequièvre}, Y. \textsc{Mezouar} et E. \textsc{Royer}} permet une gestion optimisée des bases de données dans le cadre de la vision pour robot mobile.
-L'architecture proposée permet d'enregistrer simultanément une image, les points 2D extraits avec leur descripteurs respectifs, les points 3D reconstruits ainsi que la position du robot si elle est connue. Voici un extrait de la documentation, décrivant l'objectif d'une telle bibliothèque :
+La librairie \emph{SoViN}\footnote{Software for Visual Navigation} développée par J. \textsc{Courbon}\footnote{En collaboration avec L. \textsc{Lequièvre}, Y. \textsc{Mezouar} et E. \textsc{Royer}} au sein du LASMEA, permet une gestion optimisée des bases de données dans le cadre de la vision pour la robotique mobile.
+
+L'architecture proposée permet d'enregistrer simultanément une image, les points 2D extraits avec leur descripteurs respectifs, les points 3D reconstruits ainsi que la position du robot si celle-ci elle est connue.
+Voici un extrait de la documentation, décrivant l'objectif d'une telle bibliothèque :
 \begin{quote}
 \it Dans le contexte de la navigation de robots mobiles, le système de gestion de la carte de l'environnement doit répondre à plusieurs besoins:
 \begin{itemize}
@@ -195,11 +203,14 @@ Pour pouvoir l'utiliser dans le cadre de ma thèse il faut donc ajouter/revoir l
 \begin{itemize}
 \item Multi-robots, gérer l'utilisation de plusieurs sources d'images
 \item Carte globale, résultat de la fusion de cartes locales
-\item Fermeture de boucles, pour détecter des redondances d'informations entre robots
+\item Fermeture de boucles, pour détecter des redondances d'informations sur un robot ainsi qu'entre robots
 \item Information mutuelle, comme nouveau type de descripteur
 \end{itemize}
 
 \smallfig{0.7}{images/sovin.png}{Interface du logiciel \emph{SoViN} par J. \textsc{Courbon}}{fig:SOVIN}
 
-Une interface graphique est proposée pour construire et visualiser la base de donnée.
-Le fonctionnement détaillé est visible dans \cite{Lequievre08}, qui mentionne le fonctionnement global et détaille la base de données créée.
+\vspace{5mm}
+Le fonctionnement détaillé est visible dans \cite{Lequievre08}, qui mentionne le fonctionnement global et les détaille la base de données créée (descriptions des différentes tables).
+Une interface graphique est proposée pour construire et visualiser la base de données.
+Cette librairie, écrite en C++, est libre et gratuite.
+Elle utilise le \emph{framework} Qt, pour l'interface graphique ainsi que pour l'accès aux bases de données.

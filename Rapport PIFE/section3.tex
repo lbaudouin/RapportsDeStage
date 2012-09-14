@@ -23,34 +23,36 @@ Dans un second temps on pourra envisager l'exploration autonome, c'est à dire q
 
 \subsection{Carte globale}
 
-La carte globale est la fusion de toute les cartes locales.
+La carte globale est la fusion de toutes les cartes locales.
 Elle est construite par fusion itérative de deux cartes locales sécantes.
 
 Dans un premier temps, un ordinateur central récupère toutes les cartes locales des différents robots.
 La stratégie utilisée pour la fusion est la suivante :
 \begin{enumerate}
-\item A partir de deux nuages de points 3D, on cherche les correspondances 3D/3D, c'est-à-dire comment doit être déplacer le deuxième nuage de points 3D pour se superposé au mieux avec le premier.
-Plusieurs solutions pourront être retournés.
-\item Afin de rejeté les mauvaises solutions, on testera si les points 3D mis en correspondances sont réellement les même en comparant leurs descripteurs respectifs.
-\item si le nombre de points 3D en correspondance restant est suffisant, la fusion de carte peut avoir lieux.
-On applique la transformation (rotation, translation, échelle) à la deuxième carte et on ajoute tous les points à la première.
+\item A partir de deux nuages de points 3D, on cherche les correspondances 3D/3D à l'aide d'un algorithme tel que l'ICP\footnote{Iterative Closest Point}.
+C'est-à-dire qu'on doit trouver comment doit être déplacé le deuxième nuage de points 3D pour se superposé au mieux sur le premier.
+Plusieurs solutions devront être retournées en cas d'incertitudes.
+\item Afin de rejeter les mauvaises solutions, on testera si les points 3D mis en correspondances sont réellement les même en comparant leurs descripteurs respectifs.
+\item Si le nombre de points 3D en correspondance restant est suffisant, la fusion de carte peut avoir lieux.
+On applique la transformation (rotation, translation, échelle) sur la deuxième carte que l'on vient ensuite ajouter à la première.
 \end{enumerate}
 
-Si les cartes ne sont pas sécantes, le robot devra garder en mémoire deux cartes distinctes afin de pouvoir les fusionner lui même si lors d'un nouveau parcours si passe de l'une à l'autre.
+Si les cartes ne sont pas sécantes, le robot devra garder en mémoire deux cartes distinctes afin de pouvoir les fusionner lui même dans le cas où lors d'un nouveau parcours il passe d'une carte à l'autre.
 
 Dans un second temps on pourra envisagé la fusion de carte \emph{en ligne} lorsque deux robots sont assez proches pour communiquer et qu'ils trouvent un ou plusieurs endroits communs dans leurs cartes locales.
+Un processus devra être mis en place pour qu'un des robots fusionne les cartes et envoi le résultat au second.
 
 \subsection{Navigation}
 
 L'étape de navigation peut débuter sans carte dans un mode d'exploration de l'environnement.
 Cependant en présence d'individu, il est recommandé que les cartes soient vérifiées par un superviseur.
-La navigation ne peut donc s'effectuer qu'une fois les cartes locales crées, et une carte globale si possible.
+La navigation ne peut donc s'effectuer qu'une fois les cartes locales crées ainsi qu'une carte globale si possible.
 
-Le but final étant de pouvoir se déplacer de façon autonome d'un point A à un point B.
-C'est à dire que le robot est déjà passé, au moins une fois, par les chemins qui lui est possible d'exploiter.
+Le but final est de pouvoir se déplacer de façon autonome d'un point A à un point B.
+C'est à dire que le robot doit déjà être passé, au moins une fois, par les chemins qui lui est possible d'exploiter.
 Il faudra donc obligatoirement que les deux points de départ et d'arrivée appartiennent à l'espace observé lors de la création des cartes.
 
-Afin de générer une trajectoire optimale, nous utiliserons des algorithme de navigation classique déjà exploités par un grand nombre de robot mobile.
+Afin de générer une trajectoire optimale, nous utiliserons des algorithmes de navigation classiques déjà exploités par un grand nombre de robots mobiles.
 On fera particulièrement attention au respect du code de la route et à la sécurité des piétons en zone urbaine.
 Un effort sera également à réalisé afin d'éviter les collisions dans les environnements dynamiques.
 Ces travaux seront réalisés dans la deuxième partie de ma thèse. 
