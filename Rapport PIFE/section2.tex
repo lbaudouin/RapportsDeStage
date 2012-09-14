@@ -1,7 +1,7 @@
 \section{Vision}
 \label{sec:vision}
 
-Cette partie sera une consacrée à l'aspect théorique de la reconstruction 3D.
+Cette partie sera consacrée à l'aspect théorique de la reconstruction 3D.
 Dans un premier temps nous verrons le cas de la reconstruction à partir d'une paire de caméras classiques.
 Nous verrons ensuite le modèle unifié pour les caméras catadioptriques.
 %Nous aborderons au final la vision hybride.
@@ -14,7 +14,7 @@ En prenant deux vues en utilisant une même caméra perspective, nous devons cal
 Celui-ci est déterminé par une matrice de projection $\mathbf{P}$ qui se compose de deux matrices $\mathbf{R}$ et $\mathbf{t}$, respectivement la matrice de rotation et la matrice de translation.
 
 La projection d'un point $\mathbf{X}$ de coordonnées $\begin{pmatrix}X&Y&Z\end{pmatrix}^\top$ dans l'espace donne le point $\mathbf{m}$ de coordonnées $\begin{pmatrix}u&v\end{pmatrix}^\top$ dans le plan image.
-En utilisant les coordonnées homogènes, nous pouvons d'écrire un modèle linaire de projection dans le cas d'une caméra perspective :
+En utilisant les coordonnées homogènes, nous pouvons décrire un modèle linaire de projection dans le cas d'une caméra perspective :
 \begin{equation}
 s \underbrace{\begin{pmatrix}u \\ v \\ 1\end{pmatrix}}_{\mathbf{m}} = 
 \underbrace{\begin{pmatrix}f_u && 0 && u_0 \\ 0 && f_v && v_0 \\ 0 && 0 && 1\end{pmatrix}}_{\mathbf{K}} . 
@@ -39,12 +39,12 @@ Ceci est un modèle simplifié ne prenant pas en compte les différentes distors
 
 \subsubsection{Calibration}
 \label{subsub:calibration}
-La calibration d'une caméra perspective est réalisé à partir d'une mire composée généralement par une grille ou de points \cite{HoraudBook, Hartley03Book}.
+La calibration d'une caméra perspective est réalisée à partir d'une mire composée généralement par une grille ou de points \cite{HoraudBook, Hartley03Book}.
 
 L'opération de calibration de caméra revient à modéliser le processus de formation des images, c'est-à-dire trouver la relation entre les coordonnées spatiales d'un point de l'espace et le point associé dans l'image prise par la caméra.
 
 Dans le cas d'une caméra perspective, le modèle de projection est linéaire, comme présenté dans l'équation~\ref{eq:projection}.
-La matrice de projection ou matrice de paramètres extrinsèques $\mathbf{P}$, dépends de la position de la caméra et non du capteur lui-même.
+La matrice de projection ou matrice de paramètres extrinsèques $\mathbf{P}$, dépend de la position de la caméra et non du capteur lui-même.
 La calibration consiste donc à estimer la matrice des paramètres intrinsèques $\mathbf{K}$ ainsi que les éventuelles distorsions de l'image.
 $$
 \mathbf{K} = \begin{pmatrix}f_u && 0 && u_0 \\ 0 && f_v && v_0 \\ 0 && 0 && 1\end{pmatrix} 
@@ -55,13 +55,13 @@ Le point de coordonnées $\begin{pmatrix}u_0&v_0\end{pmatrix}^\top$ est le centr
 \subsubsection{Méthode}
 \label{subsub:reconstruction}
 
-Comme nous avons pu voir précédemment, les seuls informations que nous allons utiliser dans les images sont des points.
+Comme nous avons pu voir précédemment, les seules informations que nous allons utiliser dans les images sont des points.
 Pour donner un sens à ces listes de points, ils seront appairés.
 C'est à dire que chaque point dans la première image devra avoir un point correspondant dans la seconde.
 
-On va pouvoir calculer un matrice regroupant toutes les informations possible de tirer de cette configuration.
-Cette matrice ce nommera la matrice fondamentale, notée $\mathbf{F}$.
-Elle est définit pour toutes paires de points $i$ dans les images 1 et 2 (par la suite l'indice $i$ sera omis) comme solution de l'équation :
+On va pouvoir calculer une matrice regroupant toutes les informations possible de tirer de cette configuration.
+Cette matrice se nommera la matrice fondamentale, notée $\mathbf{F}$.
+Elle est définie pour toutes paires de points $i$ dans les images 1 et 2 (par la suite l'indice $i$ sera omis) comme solution de l'équation :
 \begin{equation}
 \mathbf{m}_{i,1}^ \top.\mathbf{F}.\mathbf{m}_{i,2} = 0
 \label{eq:fondamentale}
@@ -71,7 +71,7 @@ On obtiendra la matrice essentielle $\mathbf{E}$ :
 \begin{equation}
 \mathbf{E} = \mathbf{K}_1^{\top} . \mathbf{F} . \mathbf{K}_2
 \end{equation}
-Si les deux images sont acquis par la même caméra, on aura $\mathbf{K}_1 = \mathbf{K}_2$.
+Si les deux images sont acquises par la même caméra, on aura $\mathbf{K}_1 = \mathbf{K}_2$.
 Nous pouvons obtenir la matrice essentielle directement depuis la liste de points, en normalisant les points eux-même.
 \begin{equation}
 (\mathbf{m}_{i,1}.\mathbf{K}_1^{-1})^\top.\mathbf{E}.(\mathbf{K}_2^{-1}.\mathbf{m}_{i,2}) = 0
@@ -198,11 +198,11 @@ On définit une matrice de transformation $\text{T}_{cata}$ (voir \cite{Puig11Ph
 \end{equation}
 
 Pour obtenir $T_{6\times4}$ il suffit de multiplier $\text{T}_{cata}$ par l'inverse de $\hat{R}_{est}$.
-Il nous reste maintenant extraire la matrice de rotation :
+Il nous reste maintenant à extraire la matrice de rotation :
 \begin{equation}
 \hat{R} = \hat{R}_z(\gamma).\hat{R}_y(\beta).\hat{R}_x(\alpha)
 \end{equation}
-$\hat{R}_{est}$ est la matrice $6\times6$ la plus a gauche de $\text{P}_{cata}$.
+$\hat{R}_{est}$ est la matrice $6\times6$ la plus à gauche de $\text{P}_{cata}$.
 \begin{equation}
 \gamma = \tan^{-1}\left(\frac{\hat{R}_{est,51}}{\hat{R}_{est,41}}\right)
 \end{equation}
@@ -214,7 +214,7 @@ $\hat{R}_{est} = \hat{R}_y^{-1}(\beta).\hat{R}_{est}$
 \begin{equation}
 \alpha = \tan^{-1}\left(\frac{\hat{R}_{est,42}}{\hat{R}_{est,22}}\right)
 \end{equation}
-Une fois les trois angles obtenu, nous pouvons reconstruire la matrice de rotation classique $\mathbf{R}$.
+Une fois les trois angles obtenus, nous pouvons reconstruire la matrice de rotation classique $\mathbf{R}$.
 
 Cependant, lors des simulations, les résultats obtenus pour le déplacement de la caméra étaient tous faux.
 Lors d'un déplacement en ligne droite, l'estimation du mouvement et la reconstruction 3D sont corrects, mais dès qu'une rotation est amorcée l'algorithme ne converge plus vers la solution réelle.

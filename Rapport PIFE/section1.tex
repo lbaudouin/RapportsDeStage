@@ -6,7 +6,7 @@
 \subsubsection{Vision classique}
 
 Nos robots seront équipés de caméras de types différents.
-On va donc commencer par traiter au cas par cas les algorithmes nécessaires pour l'utilisation caméras.
+On va donc commencer par traiter au cas par cas les algorithmes nécessaires pour l'utilisation de caméras.
 La caméra la plus courante est la caméra perspective (ou \textit{pinhole} en anglais).
 De très nombreux ouvrages existent sur la reconstruction à l'aide d'une caméra perspective, on retrouve notamment  \citetitle{Hartley03Book} de \citeauthor{Hartley03Book} \cite{Hartley03Book}.
 
@@ -18,14 +18,14 @@ On retrouve également les aspects mathématiques de la reconstruction avec deux
 
 \subsubsection{Vision mixte}
 
-Avec l'utilisation complémentaire de caméras omnidirectionnelles, nous pouvons nous demander si nous pouvons utiliser les deux types de caméras simultanément afin de créer le nuage de point.
+Avec l'utilisation complémentaire de caméras omnidirectionnelles, nous pouvons nous demander si nous pouvons utiliser les deux types de caméras simultanément afin de créer le nuage de points.
 On retrouve ce genre de travaux quand les études réalisées par
 \citeauthor{Sturm02}, \citetitle{Sturm02} \cite{Sturm02}.
 Certains problèmes restent cependant à éclaircir, comme la calibration des caméras omnidirectionnelles et quel modèle de caméra est à utiliser.
 
 D'autre part, en lisant ce papier, on se demande comment extraire les variables intéressantes comme la matrice essentielle ou les matrices de rotation et de translation (voir section~\ref{subsub:reconstruction}).
 
-Une autre interrogation consiste à trouvé un moyen de trouver des points correspondants entre les images perspectives et les images omnidirectionnelles.
+Une autre interrogation consiste à trouver un moyen de trouver des points correspondants entre les images perspectives et les images omnidirectionnelles.
 Le papier \cite{Puig08} utilise les descripteurs SIFT\footnote{Scale Invariant Feature Transform}, mais d'autres descripteurs seraient envisageables.
 Le principe de la reconstruction à partir d'un système hybride est semblable à celui proposé pour un système classique.
 On construit ensuite une matrice fondamentale caractérisant la scène à l'aide des correspondances des points dans les deux images.
@@ -64,7 +64,7 @@ Chaque type d'amère possède des avantages et des inconvénients :
       \hline
       Droite & Robuste, résiste aux occlusions partielles & Peu présent en extérieur\\
       \hline
-      Courbe & Plus de libertés qu'une droite & Sensible aux déplacement de la caméra qui vont modifier le profil de l'objet 3D\\
+      Courbe & Plus de libertés qu'une droite & Sensible aux déplacements de la caméra qui vont modifier le profil de l'objet 3D\\
       \hline
       Ellipse & Facile à sélectionner manuellement, utilisé pour les mires & Peu présent dans l'environnement en général\\
       \hline
@@ -75,8 +75,8 @@ Chaque type d'amère possède des avantages et des inconvénients :
 
 Nous ne pourrons donc pas utiliser les courbes et les ellipses car dans le premier cas il nous sera difficile de les définir automatiquement, et pour l'autre on ne les retrouve pas en assez grand nombre dans un environnement classique.
 Les lignes sont particulièrement présentes dans les environnements intérieurs, mais malheureusement beaucoup moins en extérieur.
-Notre robots devant naviguer principalement en extérieur, ce type d'amère est incompatible avec notre besoin.
-Il reste donc les points, qui sont naturellement présent dans toutes les images nettes d'un environnement.
+Notre robot devant naviguer principalement en extérieur, ce type d'amère est incompatible avec notre besoin.
+Il reste donc les points, qui sont naturellement présents dans toutes les images nettes d'un environnement.
 Le défi sera donc de caractériser les différents points de l'image afin de pouvoir les comparer et les appairer.
 Plusieurs outils sont à notre disposition, il s'agit de descripteurs.
 On va caractériser une imagette d'une taille fixe autour du point, puis enregistrer l'information en même temps que la position du point dans l'image.
@@ -86,7 +86,7 @@ Ce choix est validé par l'utilisation d'images omnidirectionnelles, compte tenu
 \item Les points : les appariements se font avec principalement SIFT
 \item Les droites : détection de droites verticales (droites se coupant au centre de l'image), droites parallèles (sous forme de coniques dans l'image)
 \end{itemize}
-On les retrouvent dans un très grand nombre d'article comme \cite{Goedeme07} (voir figure~\ref{fig:goedeme}) qui utilise une des propriétés intéressantes : une droite parallèle à l'axe optique de la caméra passera par le centre de l'image.
+On les retrouve dans un très grand nombre d'articles comme \cite{Goedeme07} (voir figure~\ref{fig:goedeme}) qui utilise une des propriétés intéressantes : une droite parallèle à l'axe optique de la caméra passera par le centre de l'image.
 Cette propriété est utile dans un environnement intérieur comportant des encadrements de porte, des coins de murs, des meubles ...
 \smallfig{0.6}{images/Goedeme07.png}{[Goedemé07] Omnidirectional Vision based Topological Navigation. Utilisation de droites pour la vision omnidirectionnelle}{fig:goedeme}
 
@@ -101,7 +101,7 @@ En reconstruisant le modèle 3D de l'environnement, on obtient à chaque prise d
 En joignant les segments entre deux prises de vue, on obtient donc une approximation du chemin parcouru par la caméra.
 Cependant ce résultat est généralement moins précis qu'avec un GPS car la fréquence d'acquisition des images est d'ordinaire plus lente avec une caméra.
 Ceci s'explique par le fait qu'il faille que les deux images soient légèrement différentes pour avoir la possibilité d'extraire des informations sur le déplacement.
-Des images trop approchées rendrait les calculs instables.
+Des images trop approchées rendraient les calculs instables.
 
 \smallfig{0.5}{images/Rituerto10.png} {Ici la courbe noire est la trajectoire réelle, la bleue est obtenue par vision omnidirectionnelle, la rouge par la vision classique} {fig:rituerto}
 Dans le papier \cite{Rituerto10} (voir figure~\ref{fig:rituerto}), l'auteur compare la reconstruction de la trajectoire obtenue : d'une part à l'aide d'une caméra omnidirectionnelle et de l'autre par un SLAM classique (caméra perspective).
@@ -125,11 +125,11 @@ Il ne sera, par conséquent, pas évident de mettre en place un tel système dan
 \smallfig{0.5}{images/Konolige03.png}{[Konolige03] Map Merging for Distributed Robot Navigation}{fig:konolige}
 
 Toujours avec l'utilisation de \emph{scans} laser, le papier \cite{Gutmann99} propose une technique de recherche de recouvrement dans une démarche d'exploration d'environnement. 
-Il utilise des sous-parties de la carte globale afin de voir si le motif se retrouve dans une autre partie de la carte afin effectuer une fermeture de boucle.
-La figure~\ref{fig:gutmann} montre le résultat d'un tel algorithme où les zones foncés sont les endroits qui sont susceptibles de fermer la boucle. 
+Il utilise des sous-parties de la carte globale afin de voir si le motif se retrouve dans une autre partie de la carte afin d'effectuer une fermeture de boucle.
+La figure~\ref{fig:gutmann} montre le résultat d'un tel algorithme où les zones foncées sont les endroits qui sont susceptibles de fermer la boucle. 
 \smallfig{0.5}{images/Gutmann99.png}{[Gutmann99] Incremental Mapping of Large Cycle Environments}{fig:gutmann}
 
-Un des papiers les plus intéressant en vision monoculaire est \cite{Strasdat10}, qui, à l'aide d'une caméra perspective reconstruit un bâtiment en utilisant un ajustement de faisceaux qui corrige la dérive du facteur d'échelle.
+Un des papiers les plus intéressants en vision monoculaire est \cite{Strasdat10}, qui, à l'aide d'une caméra perspective reconstruit un bâtiment en utilisant un ajustement de faisceaux qui corrige la dérive du facteur d'échelle.
 Un pré-ajustement est effectué avec une fenêtre glissante de quelques images lors de la première création du modèle 3D.
 Puis une fois que la fermeture de boucle est détectée, un ajustement global sur 7 degrés de liberté (rotation, translation échelle) est effectué.
 
@@ -143,15 +143,15 @@ Tous les algorithmes vus utilisent un système de fermeture de boucles.
 Parmi les techniques existantes, on peut relever quelques papiers intéressants comme \cite{Korrapati11} qui propose un système de gestion des amères/descripteurs mis en place afin de pouvoir retrouver rapidement les fermetures de boucle.
 La figure~\ref{fig:korrapati} détaille le processus utilisé pour l'ISP\footnote{Image Sequence Partitioning}.
 Ce système pourra être utilisé dans le cas de notre étude pour compléter la bibliothèque SoViN (voir SoViN, section~\ref{subsub:sovin}).
-\smallfig{0.7}{images/Korrapati11.png}{[Korrapati11] Efficient Topological Mapping with Image Sequence Partitionning. Schéma de fonctionne de l'algorithme proposé.}{fig:korrapati}  
+\smallfig{0.7}{images/Korrapati11.png}{[Korrapati11] Efficient Topological Mapping with Image Sequence Partitionning. Schéma de fonctionnement de l'algorithme proposé.}{fig:korrapati}  
 
 
 
 \subsection{Multi-robots}
 
 Comme annoncé précédemment, notre étude portera sur une flotte de robots mobiles.
-Cette flotte ne sera pas forcement toujours compacte, c'est à dire qu'elle pourra se diviser en groupes, ou de séparer complètement.
-Les robots devront alors pouvoir basculer d'un mode de navigation individuel à un mode de navigation groupé.
+Cette flotte ne sera pas forcement toujours compacte, c'est à dire qu'elle pourra se diviser en groupes, ou se séparer complètement.
+Les robots devront alors pouvoir basculer d'un mode de navigation individuelle à un mode de navigation groupée.
 Il y a donc un aspect supplémentaire à prendre en compte, la coopération.
 
 Le papier \cite{Hukui10} se base sur l'utilisation des connaissances des positions relatives des robots afin d'améliorer la qualité de la localisation globale.
@@ -161,8 +161,8 @@ Si un robot connaît la position d'un autre robot par rapport à sa position cou
 Sur la figure~\ref{fig:hukui} extraite de~\cite{Hukui10}, le robot blanc va pouvoir utiliser les points visibles par les robots gris en plus des points qu'il verra lui même.
 Ceci permet une plus grande robustesse des informations si plusieurs robots voient le même point, mais nécessite une communication permanente entre les différents robots.
 Cependant quelques points importants restent à éclaircir, dont le plus important : comment localiser les robots entre eux ?
-Effectivement, nous devons faire la différence entre un VipaLab et une voiture classique sus une image omnidirectionnelle, c'est donc un problème de détection puis de suivi d'objets qui peut s'avérer complexe.
-L'autre point est la précision plus ou moins importante sur les positions (et orientations) relatives des robots obtenues par la vision, qui va entraîné des erreurs non négligeables si les informations ne sont pas redondante c'est-à-dire si elles ne peuvent pas être re-vérifiées.
+Effectivement, nous devons faire la différence entre un VipaLab et une voiture classique sur une image omnidirectionnelle, c'est donc un problème de détection puis de suivi d'objets qui peut s'avérer complexe.
+L'autre point est la précision plus ou moins importante sur les positions (et orientations) relatives des robots obtenues par la vision, qui va entraîner des erreurs non négligeables si les informations ne sont pas redondantes c'est-à-dire si elles ne peuvent pas être re-vérifiées.
 
 %\smallfig{0.2}{images/Howard06.png}{[Howard06] Multi-robot Simultaneous Localiszation and Mapping using Particule Filters}{fig:howard}  
 %\warning{J'ai pas bien compris} le papier \cite{Howard06}
@@ -210,7 +210,7 @@ Pour pouvoir l'utiliser dans le cadre de ma thèse il faut donc ajouter/revoir l
 \smallfig{0.7}{images/sovin.png}{Interface du logiciel \emph{SoViN} par J. \textsc{Courbon}}{fig:SOVIN}
 
 \vspace{5mm}
-Le fonctionnement détaillé est visible dans \cite{Lequievre08}, qui mentionne le fonctionnement global et les détaille la base de données créée (descriptions des différentes tables).
+Le fonctionnement détaillé est visible dans \cite{Lequievre08}, qui mentionne le fonctionnement global et les détails de la base de données créée (descriptions des différentes tables).
 Une interface graphique est proposée pour construire et visualiser la base de données.
 Cette librairie, écrite en C++, est libre et gratuite.
 Elle utilise le \emph{framework} Qt, pour l'interface graphique ainsi que pour l'accès aux bases de données.
